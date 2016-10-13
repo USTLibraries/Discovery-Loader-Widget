@@ -20,7 +20,7 @@
 	<script type="text/javascript" src="//[yourdomain.edu]/[yourpath]/discovery-loader.js"></script>
 	
 	
-	See readme.html for more options
+	See example.html for more options
 */
 
 
@@ -107,16 +107,16 @@ if ( typeof( discovery_loaded ) === "undefined" ) {	// We haven't loaded, go ahe
 		
 	// REQUIRED: Only NEW is required as long as launch is set to 0
 	var myFile = { 
-	   OLD:{ js:"//static.stthomas.edu/libraries/js/discovery/summon.js",
-			 css:"//static.stthomas.edu/libraries/js/discovery/summon.css" 
+	   OLD:{ js:"",
+			 css:"" 
 		   },
-	   NEW:{ js:"//static.stthomas.edu/libraries/js/discovery/summon.js",
-			 css:"//static.stthomas.edu/libraries/js/discovery/summon.css" 
+	   NEW:{ js:"//static.stthomas.edu/libraries/js/discovery/summon-20161013-min.js",
+			 css:"//static.stthomas.edu/libraries/js/discovery/summon-20161013-min.css" 
 		   }
 	};
 
 	// OPTIONAL
-	var ver = "0.1.1"; // Debug use only. Just an indicator that shows in the Browser Console. Does nothing to affect the running of the code.
+	var ver = "0.1.2"; // Debug use only. Just an indicator that shows in the Browser Console. Does nothing to affect the running of the code.
 	
 	/* END CUSTOM VARIABLES
 	 * The rest of the code doesn't really need to be touched unless you want to change/break functionality
