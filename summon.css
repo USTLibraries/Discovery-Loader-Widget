@@ -1,7 +1,14 @@
 /*
-	Discovery Search Box Generator
-	University of St. Thomas
+	Discovery Loader Widget
+	University of St. Thomas Libraries
 	September 22, 2016
+	
+	Full Code (including non-minified) and Documentation available at:
+	https://github.com/USTLibraries/Discovery-Loader-Widget
+	
+	https://jscompress.com/ was used to create minified js version
+	https://cssminifier.com/ was used to create the minified css version
+	
 */
 
 @charset "utf-8";
