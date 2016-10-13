@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Discovery Loader Widget - No JQuery Example</title>
+
+</head>
+
+<body>
+
+<h1>Discovery Loader Widget - No JQuery Example</h1>
+
+<p>This page shows what happens if JQuery is not loaded. The script degrades gracefully and shows a common search box. The Discovery Loader Widget requires JQuery for scoping functions. However, if it is accidently placed on a page without JQuery it will still work, creating a basic search box. Placeholder, Tagline, and Advanced search attributes may still be customized.</p>
+
+<p>So if you don't have JQuery on your page, but you still want to place a plain unscoped search box, it'll work perfectly!</p>
+
+<script>
+//discovery_style = "OLD";
+//discovery_style = "NEW";
+</script>
+
+<p><a href="https://static.stthomas.edu/libraries/discovery">Search Library Resources</a></p>
+
+<h2>BOOKS</h2>
+<div class="stthomas-discovery-search-widget"
+    id="discoverySearch001"
+	data-scope=""
+    data-scope-content-type="BOOKS"
+    data-tagline="Book search keywords:"
+    data-placeholder="Book keywords"
+><a href="https://static.stthomas.edu/libraries/discovery">Search Library Resources</a></div>
+
+<h2>BOOKS by TITLE</h2>
+<div class="stthomas-discovery-search-widget"
+    id="discoverySearch003"
+	data-scope="title"
+    data-scope-content-type="BOOKS"
+    data-tagline="Type as much or as little of the book title as you want:"
+    data-placeholder="Book title keywords"
+><a href="https://static.stthomas.edu/libraries/discovery">Search Library Resources</a></div>
+
+<h2>BOOKS by AUTHOR</h2>
+<div class="stthomas-discovery-search-widget"
+    id="discoverySearch002"
+	data-scope="author"
+    data-scope-content-type="BOOKS"
+    data-tagline="Type the book author's last or full name:"
+    data-placeholder="Book author name"
+><a href="https://static.stthomas.edu/libraries/discovery">Search Library Resources</a></div>
+
+
+<script type="text/javascript" src="//static.stthomas.edu/libraries/js/discovery/discovery-loader.js"></script>
+
+</body>
+</html>
