@@ -110,8 +110,8 @@ if ( typeof( discovery_loaded ) === "undefined" ) {	// We haven't loaded, go ahe
 	   OLD:{ js:"",
 			 css:"" 
 		   },
-	   NEW:{ js:"//static.stthomas.edu/libraries/js/discovery/summon-20161013-min.js",
-			 css:"//static.stthomas.edu/libraries/js/discovery/summon-20161013-min.css" 
+	   NEW:{ js:"//static.stthomas.edu/libraries/js/discovery/summon.js",
+			 css:"//static.stthomas.edu/libraries/js/discovery/summon.css" 
 		   }
 	};
 
