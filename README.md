@@ -11,6 +11,6 @@ In fact, you don't even need to worry about versioning if you aren't updating th
 Advanced Uses:
 See documentation for launching/deploying new code.
 For example you can have discovery-20161201.js expire and discovery-20161215.js take over at 6am Dec 15, 2016.
-Maybe, you are using summon-20161201.js and are launching primo-20170531.js at a specified time.
+Maybe you are using summon-20161201.js and are launching primo-20170531.js at a specified time on May 31, 2017. You can set the launch to be = 201705310600.
 
 Eventually we'll make the whole "use it out of the box" thing simpler but the code is still evolving. Stable, but evolving.
