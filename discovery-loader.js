@@ -103,12 +103,12 @@ if ( typeof( discovery_loaded ) === "undefined" ) {	// We haven't loaded, go ahe
 	 */
 	
 	// REQUIRED: YYYYMMDDHHMM - or 0 if you strictly want to use myFile[NEW]
-	var launch = 202009191500;
+	var launch = 0;
 		
 	// REQUIRED: Only NEW is required as long as launch is set to 0
 	var myFile = { 
-	   OLD:{ js:"//static.stthomas.edu/libraries/js/discovery/summon-20160919.js",
-			 css:"//static.stthomas.edu/libraries/js/discovery/summon-20160919.css" 
+	   OLD:{ js:"//static.stthomas.edu/libraries/js/discovery/summon.js",
+			 css:"//static.stthomas.edu/libraries/js/discovery/summon.css" 
 		   },
 	   NEW:{ js:"//static.stthomas.edu/libraries/js/discovery/summon.js",
 			 css:"//static.stthomas.edu/libraries/js/discovery/summon.css" 
