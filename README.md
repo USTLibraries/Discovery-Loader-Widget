@@ -5,7 +5,7 @@ Generate a search box for your library discovery layer. Currently available for 
 
 1. Use a DIV tag from one of the example HTML files.
 2. Customize the custom variables in the .js files.
-3. Then add a call to the [discovery].js file.
+3. Then add a call to the [summon/primo].js file.
 4. CSS will be included automatically! But if you wish to load the css into a main css file, go ahead (it checks so it won't do it twice!)
 
 ## Summon Search
