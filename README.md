@@ -12,4 +12,4 @@ Use the summon.js and summon.css files
 
 New! Now Primo Search boxes are supported.
 Just use primo.js and primo.css files
-Uses the same* <div> tag structure as before so switching to Primo from Summon (or vice versa) is easy! (More documentation coming soon)
+Uses the same DIV tag structure as before so switching to Primo from Summon (or vice versa) is easy! (More documentation coming soon)
