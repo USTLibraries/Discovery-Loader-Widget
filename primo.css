@@ -1,0 +1,153 @@
+/*
+	Discovery Loader Widget
+	University of St. Thomas Libraries
+	May 11, 2017
+	
+	Full Code (including non-minified) and Documentation available at:
+	https://github.com/USTLibraries/Discovery-Loader-Widget
+	
+	https://jscompress.com/ was used to create minified js version
+	https://cssminifier.com/ was used to create the minified css version
+	
+*/
+
+@charset "utf-8";
+
+/* AUTO COMPLETE CSS */
+.discovery-search-widget .ui-autocomplete {
+    z-index: 10000 !important;
+}
+
+.discovery-search-widget .ui-corner-all {
+	-moz-border-radius: 4px 4px 4px 4px;
+}
+
+.discovery-search-widget .ui-widget-content {
+	border: 0.1rem solid gray;
+	color: #222222;
+	background-color: white;
+}
+
+.discovery-search-widget .ui-widget {
+	font-family: truenoregular,Arial,sans-serif;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+
+.discovery-search-widget .ui-menu {
+	display: block;
+	float: left;
+	list-style: none outside none;
+	margin: 0;
+	padding: 0px;
+}
+
+.discovery-search-widget .ui-autocomplete {
+	cursor: default;
+	position: absolute;
+}
+
+.discovery-search-widget .ui-menu .ui-menu-item {
+	clear: left;
+	float: left;
+	margin: 0;
+	width: 100% !important;
+	display: block;
+	padding: .4rem .4rem .4rem 1.4rem !important;
+	text-decoration: none;
+	cursor: pointer;
+	background-color: white;
+	border: 1px solid #DDDDDD;
+	box-sizing: border-box;
+}
+
+.discovery-search-widget .ui-menu .ui-menu-item:hover,
+.discovery-search-widget .ui-menu .ui-state-focus {
+	display: block;
+	text-decoration: none;
+	color: #510c76;
+	cursor: pointer;
+	background-color: #cccccc;
+}
+
+.discovery-search-widget .ui-widget-content {
+	color: #222222;
+}
+		
+.discovery-search-widget {
+	font-family: truenolight,Arial,sans-serif;
+	margin: 20px 0px 20px 0px;
+}
+
+/* END AUTOCOMPLETE */
+
+.discovery-search-widget .discovery-search-field {
+	width: 100% !important;
+	display: inline-block !important;
+	-webkit-appearance: none;
+	border-radius: 0;
+	background-color: #fff;
+	font-family: inherit;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ccc;
+	box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+	color: rgba(0,0,0,.75);
+	display: block;
+	font-size: 14px;
+	margin: 0 0 0 0;
+	padding: 8px 120px 8px 8px;
+	height: 37px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	transition: all .15s linear;
+}
+
+
+
+/* SEARCH FIELDS */
+.discovery-search-widget .discovery-search-field, 
+.discovery-search-widget .discovery-search-field:focus {
+    background: transparent -moz-linear-gradient(center top, #FFF, #EBEBEB) repeat scroll 0% 0%;
+    border: 1px solid #AEAEAE;
+    color: #000;
+    background: transparent url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAA5ElEQVQokZXSXUvDQBSE4UehCmqqonit1C8C1d+hxFQtUkQQa++iRv3/N170xKY1DThwINlhdt/JhpnWcI4MY0yQIw2vUV3coIx5jvmI9wzJYmg9Ql8Y4QR72EcPD/iO0zv1YIpPDLHVQJOEV+KibuR4w9GyHjhGEWSr1eIET9htCW7gNar8UlXBnf8GB4F62BLsBWpeR01Niw9j50VthlegXzc6ZtdxjzPTe93GaYTe8aLhO3QDuQzsSUwRM471LAjm1MFl9BjhMZ77OMCt2Y/wJ1wpCYqVBaq7qHS9LNi24QBXP03LHWbLFYNlAAAAAElFTkSuQmCC") no-repeat scroll 10px 10px !important;
+    padding-left: 30px !important;
+	margin-right: .2rem;
+}
+
+
+/* SUMMON BUTTONS */
+.discovery-search-widget .discovery-search-button {
+     background-color: #510c76;
+	 color: white;
+     font-size: 16px !important;
+     width: 116px;
+     height: 37px;
+	 top: -37px;
+	 float: right;
+	 position: relative;
+     border: 1px solid #CCC !important;
+	 cursor: pointer;
+}
+
+.discovery-search-widget label, span.ui-helper-hidden-accessible {
+	position:absolute;
+	left:-10000px;
+	top:auto;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+}
+
+.discovery-search-widget p.discovery-tagline {
+	margin-top: 1rem;
+	font-weight: 500;
+	font-family: truenoregular,Arial,sans-serif;
+	margin-bottom: 0px;
+}
+
+.discovery-search-widget p.discovery-advanced {
+	margin-top: 0px;
+}
