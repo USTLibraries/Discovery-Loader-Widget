@@ -1,7 +1,7 @@
 /*
 	Discovery Loader Widget (Primo)
 	University of St. Thomas Libraries
-	May 11, 2017
+	May 12, 2017
 	
 	Full Code (including non-minified) and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
@@ -15,39 +15,43 @@
 	
 */
 
-
-
 (function () {
 	"use strict";
-	
-								
+
+
 	/* *****************************************************************
 	 * CUSTOM VARIABLES
 	 */
-
+	
+	var ver = "0.0.22-20170512"; // Just something to check for in the Browser Console
+	                             // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
+								 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
+								 // and should take a break
 
 	var discoveryCustom = { css: 'primo.css', // location of search box css file
-						url: 'https://yoursite.primo.exlibrisgroup.com', // base URL to your primo instance
-						instituion: 'YOUR_INSTITUTION',
-						vid: 'YOURVIEW',
-						tab: 'default_tab',
-						search_scope: 'yourscope',
-						bulkSize: '10',
-						// facet=local1,include,My University Library
-						localParam: 'local1', // for a localized search, what is the param? local1, local2?
-						localDesc: 'University of Me' // the descriptor used for local resources
-					  };
-
-	
-
+							url: 'https://yoursite.primo.exlibrisgroup.com', // base URL to your primo instance
+							instituion: 'YOUR_INSTITUTION',
+							vid: 'YOURVIEW',
+							tab: 'default_tab',
+							search_scope: 'yourscope',
+							bulkSize: '10',
+							// facet=local1,include,My University Library
+							localParam: 'local1', // for a localized search, what is the param? local1, local2?
+							localDesc: 'University of Me', // the descriptor used for local resources
+							facet_books: 'books', // can only include one material type, what type should BOOKS return?
+							facet_audio: 'audio', // can only include one material type, what type should AUDIO return?
+							facet_video: 'video', // can only include one material type, what type should VIDEO return?
+							facet_music: 'score' // can only include one material type, what type should MUSIC return?
+						};
 	/* 
 	 * END CUSTOM VARIABLES
 	 * Yep, that's it. No other code changes are necessary in this .js file
 	 ***************************************************************** */
 
+	console.log("DISCOVERY: Loading Discovery search box (Primo: ver "+ver+")...");
 	
 	var cssCheck = function() {
-		
+
 		// load in the css, but check first to make sure it isn't already loaded
 		// we do this rather than check for the file because the search box css could have been merged into another file, so we check css properties instead
 		// just so long as ".discovery-search-widget label { left: -10000px; }" doesn't change!
@@ -61,18 +65,14 @@
 			css.href= discoveryCustom.css;
 			document.getElementsByTagName('head')[0].appendChild(css);
 		}
-		
+
 	};
-	
+
 
 	// check for jQuery, if not exist, just place a plain javascripted search box (no scoping)
 	// this entire script could be re-written so as to not use jQuery, but it serves my purpose
 	if (  typeof($) !== "undefined" ) {
 		$(document).ready( function(){
-
-			var ver = "1.0-20170501"; // just something to check for in the Browser Console, does nothing else
-
-			console.log("DISCOVERY: Loading Discovery search box (ver "+ver+")...");
 
 			(function( $ ) {
 
@@ -222,17 +222,16 @@
 							temp = temp.toLowerCase();
 
 							if ( temp === "book" || temp === "books" ) {
-								hiddenFields.push( createHiddenField("facet","rtype,include,books") );
+								hiddenFields.push( createHiddenField("facet","rtype,include,"+discoveryCustom.facet_books) );
+							} else if ( temp === "audio" ) {
+								hiddenFields.push( createHiddenField("facet","rtype,include,"+discoveryCustom.facet_audio) );
+							} else if ( temp === "video" ) {
+								hiddenFields.push( createHiddenField("facet","rtype,include,"+discoveryCustom.facet_video) );
 							} else if ( temp === "music" ) {
-								hiddenFields.push( createHiddenField("facet","rtype,include,music") );
-							} else if ( temp === "film" || temp === "films" ) {
-								hiddenFields.push( createHiddenField("facet","rtype,include,video") );
+								hiddenFields.push( createHiddenField("facet","rtype,include,"+discoveryCustom.facet_music) );
 							} else {
 								var myTypes = (temp.trim()).split(','); // we trim in case it gets messy " param,aasdf,asdf "
-								for (var i = 0, len = myTypes.length; i < len; i++) {
-									hiddenFields.push( createHiddenField("facet", "rtype,include,"+myTypes[i].trim() ) ); // we trim for asdf, asdf , asdf
-								}
-
+								hiddenFields.push( createHiddenField("facet", "rtype,include,"+myTypes[0].trim() ) ); // we can only include 1
 							}
 
 						}
@@ -562,11 +561,12 @@
 
 			divs[i].innerHTML = html;
 		}
-		
+
 		cssCheck();
 	}
-	
+
 })();
+
 
 // from primo documentation, used by javascript only version
 function searchPrimo(myId) {
