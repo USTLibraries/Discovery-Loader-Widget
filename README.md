@@ -22,8 +22,8 @@ Uses the same DIV tag structure as before so switching to Primo from Summon (or 
 
 ## Installation
 
-1. Download and customize the primo.js file (see JavaScript Customization below)
-2. Download and customize the primo.css file (basically only the color of the button)
+1. Download and customize the primo.js (or summon.js) file (see JavaScript Customization below)
+2. Download and customize the primo.css (or summon.css) file (basically the color of the button at the very least unless you like purple)
 3. Place primo.js and primo.css or summon.js and summon.css files on your server
 4. Add DIV HTML, JavaScript src, and (optional) CSS link to your pages.
 5. Be sure the links in your DIV tags point to your main discovery search page (not results)
