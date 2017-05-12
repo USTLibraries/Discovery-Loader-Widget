@@ -1,0 +1,498 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Discovery Loader Widget (Primo) Example Page</title>
+
+
+<meta name="viewport" content="width=device-width">
+
+<!-- Bring in the JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+</head>
+
+<body>
+
+
+<h1>Discovery Loader Widget (Primo) Example Page</h1>
+
+<p>The most up to date, sharable code, is available via the <a href="https://github.com/USTLibraries/Discovery-Loader-Widget">USTLibraries GitHub page</a>.</p>
+
+	<h2>Example</h2>
+	<h3>Code</h3>
+	
+<div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
+<pre><tt>
+&lt;link href="primo.css" type="text/css"&gt;&lt;!-- optional, code will include on own if not present --&gt;
+
+&lt;!-- search box --&gt;
+&lt;div class="discovery-search-widget"
+	id="discoverySearch111"
+	data-tagline="Type your search term(s):"
+	data-placeholder="Search for articles, books, and more"
+	data-advanced="default"
+&gt;&lt;a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources&lt;/a&gt;&lt;/div&gt;
+&lt;!-- end search box --&gt;
+
+&lt;script type="text/javascript" src="primo.js"&gt;&lt;/script&gt;
+
+</tt></pre>
+</div>
+
+	<h3>Search Box</h3>
+<div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
+
+    <!-- search box -->
+    <div class="discovery-search-widget"
+            id="discoverySearch111"
+            data-tagline="Type your search term(s):"
+            data-placeholder="Search for articles, books, and more"
+            data-advanced="default"
+        ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+    <!-- end search box -->
+
+</div>
+
+	<h2>Documentation</h2>
+<p>The js and css code is fully documented with comments.</p>
+<h3>What you will need:</h3>
+<ul>
+  <li>A place to host your css and js files</li>
+  <li>A basic understanding of 3 HTML tags (<tt>DIV</tt>, <tt>A</tt>, <tt>SCRIPT</tt>), tag attributes (<tt>data-</tt>, <tt>href</tt>, <tt>src</tt>), and setting variables in JavaScript (Don't worry, it's all heavily commented)</li>
+  <li>jQuery and jQuery UI loaded on the page (works without autosuggest if no jQuery UI). If you need to add jQuery to your HEAD yourself: 
+   <pre>
+   &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"&gt;&lt;/script&gt;
+   &lt;script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"&gt;&lt;/script&gt;</pre></li>
+	<li>It does fall back to plain JavaScript if no jQuery, but produces an unscoped basic search box.</li>
+</ul>
+<P>IMPORTANT!: There is currently NOT an autosuggest feature though the code is there for future use. Therefore you do NOT need jQuery UI.</P>
+<h3>Files:</h3>
+<ul>
+	<li><a href="primo.js">primo.js</a></li>
+  	<li><a href="primo.css">primo.css</a></li>
+</ul>
+<h3>Functionality:</h3>
+<ul>
+  <li>Works on main website and LibGuides 2.0 </li>
+  <li>Won't conflict with other widgets of the same kind if mulitple on one page (even if not unique element ID)</li>
+  <li>Degrades gracefully if no JavaScript (Display a default link to the discovery search page)</li>
+  <li>Degrades gracefully if no jQuery, falling back to a simple JavaScript generated html search form with no scoping [<a href="example-primo-nojquery.html">see example</a>]</li>
+  <li>Degrades gracefully if no jQuery UI, and will not attempt autosuggest</li>
+  <li>If jQuery UI available, it will have an autosuggest</li>
+  <li>Enter key will issue search and on screen &quot;Search&quot; key on iOS and Android will initiate search</li>
+  <li>Compatible with Windows (IE, Chrome, Firefox), Mac (Safari, Chrome, Firefox), iOS (Safari, Chrome, Firefox), Android (Chrome, Firefox)</li>
+  <li>Responsive</li>
+  <li>Meets Accessibility standards (Has a label for screen readers and the submit button is marked)</li>
+</ul>
+<p>Documentation that walks you through the code and logic may be found in the comments of the source of this page and the source of the scripts and css. So be sure to view the plain HTML source for a greater, technical, understanding.</p>
+
+
+<p>The link within the &lt;div&gt; takes user to main search page: <a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a> and is used as placeholder text within the &lt;div&gt; tag. It will be replaced by the search form. Or, if JavaScript is not enabled, remains as a means of getting to the main search page.... on which JavaScript will be required. Note that this is the only piece of HTML that needs to be customized.</P>
+
+
+	<h2>Installation</h2>
+	
+	<ol>
+		<li>Download and customize the primo.js file (see JavaScript Customization below)</li>
+		<li>Download and customize the primo.css file (basically only the color of the button)</li>
+		<li>Place primo.js and primo.css files on your server</li>
+		<li>Add DIV HTML, JavaScript src, and (optional) CSS link to your pages.</li>
+		<li>Be sure the links in your DIV tags point to your Summon search</li>
+	</ol>
+
+<p>Basic format that we copy and paste into your CMS is:</p>
+
+<p>JavaScript in HEAD (or at end of BODY, or immediately following DIV):</p>
+	
+<div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
+<pre><tt>&lt;script type="text/javascript" src="primo.js"&gt;&lt;/script&gt;</tt></pre>
+</div>
+
+<p>CSS in HEAD (or include CSS within your main css, or not at all since the script will check for it an include it automatically):</p>
+	
+<div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
+<pre><tt>&lt;link href="primo.css" type="text/css"&gt;</tt></pre>
+</div>
+
+<p>HTML in BODY:</p>
+
+<div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
+<pre><tt>&lt;div class="discovery-search-widget"&gt;
+    &lt;a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW"&gt;Search Library Resources&lt;/a&gt;
+&lt;/div&gt;</tt></pre>
+</div>
+
+<h2>Examples</h2>
+<p>Here are a series of search boxes with different scopes, taglines, and placeholders. View source to see the code or scroll to the bottom of this page for samples</p>
+
+
+<div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
+
+<h3>Library Home Page (Unscoped)</h3>
+
+<!-- search box -->
+<div class="discovery-search-widget"
+        id="discoverySearch001"
+        data-tagline="Type your search term(s):"
+        data-placeholder="Search for articles, books, and more"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end search box -->
+
+
+	<h3>Predefined Scopes</h3>
+	<p>Content type labels differ and you may want to easily reclassify 3 of the large ones such as BOOKS, AUDIO, and VIDEO. These are defined in the custom section of the JavaScript (summon.js) file. (See JavaScript Customization below)</p>
+	
+	
+<h4>BOOKS</h4>
+
+<!-- books keyword search box -->
+    <div class="discovery-search-widget"
+        id="discoverySearchBooks001"
+        data-scope=""
+        data-scope-content-type="BOOKS"
+        data-tagline="Book search keywords:"
+        data-placeholder="Book keywords"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end books keyword search box -->
+
+<h5>BOOKS by TITLE</h5>
+
+<!-- books title search box -->
+    <div class="discovery-search-widget"
+        id="discoverySearchBooks002"
+        data-scope="title"
+        data-scope-content-type="BOOKS"
+        data-tagline="Type as much or as little of the book title as you want:"
+        data-placeholder="Book title keywords"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end books title search box -->
+
+<h5>BOOKS by AUTHOR</h5>
+
+<!-- books author search box -->
+    <div class="discovery-search-widget"
+        id="discoverySearchBooks003"
+        data-scope="author"
+        data-scope-content-type="BOOKS"
+        data-tagline="Type the book author's last or full name:"
+        data-placeholder="Book author name"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end books author search box -->
+
+
+
+<h4>VIDEO</h4>
+
+<!-- video search box -->
+    <div class="discovery-search-widget"
+        id="discoverySearchFilms001"
+        data-scope=""
+        data-scope-content-type="VIDEO"
+        data-tagline="Type your search term(s):"
+        data-placeholder="Search for streaming videos and DVDs:"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end video search box -->
+
+<h5>FILMS by TITLE</h5>
+
+<!-- video title search box -->
+    <div class="discovery-search-widget"
+        id="discoverySearchFilms002"
+        data-scope="title"
+        data-scope-content-type="VIDEO"
+        data-tagline="Type as much or as little of the title as you want:"
+        data-placeholder="Title keywords"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end video title search box -->
+
+<h5>FILMS by AUTHOR</h5>
+
+<!-- video author search box -->
+    <div class="discovery-search-widget"
+        id="discoverySearchFilms003"
+        data-scope="author"
+        data-scope-content-type="VIDEO"
+        data-tagline="Type the author's last or full name:"
+        data-placeholder="Author name"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!--end video author search box -->
+
+
+<h4>AUDIO</h4>
+
+<!-- music search box -->
+<div class="discovery-search-widget"
+    id="discoverySearchMusic001"
+    data-scope-content-type="AUDIO"
+    data-tagline="Type your search term(s):"
+    data-placeholder="Search for articles, books, and more"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- music search box -->
+
+<h5>AUDIO by TITLE</h5>
+<div class="discovery-search-widget"
+    id="discoverySearchMusic002"
+	data-scope="title"
+    data-scope-content-type="AUDIO"
+    data-tagline="Type as much or as little of the title as you want:"
+    data-placeholder="Title keywords"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h5>AUDIO by AUTHOR</h5>
+<div class="discovery-search-widget"
+    id="discoverySearchMusic003"
+	data-scope="author"
+    data-scope-content-type="AUDIO"
+    data-tagline="Type the author's last or full name:"
+    data-placeholder="Author name"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h2>More Examples</h2>
+<p>Again, view source to see how these are implemented.</p>
+
+<h3>Default</h3>
+<div class="discovery-search-widget"
+    id="discoverySearchDefault"
+    data-placeholder="default"
+    data-advanced="default"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h3>Plain</h3>
+
+<div class="discovery-search-widget">
+<a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a>
+</div>
+
+<h3>Custom content-type</h3>
+<p>Here we've set data-scope-content-type to something other than 'BOOKS', 'AUDIO', or 'VIDEO'. Note that Primo only allows you to search for 
+one content type at a time.</p>
+
+<div class="discovery-search-widget"
+    id="discoverySearch125"
+    data-scope-content-type="newspaper_articles"
+    data-tagline="default"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h3>Discipline</h3>
+<div class="discovery-search-widget"
+    id="discoverySearch126"
+    data-scope-discipline="Computer Science"
+    data-tagline="Search within computer science:"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h3>Date Scoping</h3>
+<div class="discovery-search-widget"
+    id="discoverySearch127"
+    data-scope-date="2007:2015"
+    data-tagline="Search between 2007 and 2015:"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h3>Full Text Scoping</h3>
+<div class="discovery-search-widget"
+    id="discoverySearch128"
+    data-scope-fulltext="true"
+    data-tagline="Full text only:"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h3>Scholarly publications Scoping</h3>
+<div class="discovery-search-widget"
+    id="discoverySearch129"
+    data-scope-scholarly="true"
+    data-tagline="Scholarly publications only:"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h3>Local only Scoping</h3>
+<div class="discovery-search-widget"
+    id="discoverySearch130"
+    data-scope-local="true"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+<h3>Subject Term Scoping</h3>
+<div class="discovery-search-widget"
+    id="discoverySearch135"
+    data-scope-subj-terms="philosophy,history"
+    data-tagline="Philosophy History:"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+
+	</div>
+
+
+<h2>What are the div attributes available?</h2>
+
+	<P>I used the <a href="https://knowledge.exlibrisgroup.com/Primo/Product_Documentation/New_Primo_User_Interface/New_UI_Customization_-_Best_Practices#Creating_a_Search_Box_With_Deep_Links_to_the_New_UI">Primo Search Box Documentation</a>, trial and error using the available facets, and previous experience with Matthew Reidsma's (GVSU) <a href="https://github.com/mreidsma/Custom-Summon-Searches">Custom Summon Searches</a> to come up with these.</P>
+	<p>The nice thing is that the DIV attributes are interchangable between summon.js and primo.js which was the intent. The only difference is the way date
+		scope is formatted (YYYY:YYYY for Primo, YYYY-MM-DD:YYYY-MM-DD for Summon) and the fact that Primo can only take 1 material type.</p>
+
+<h3>div attributes:</h3>
+
+<style>
+	dt { font-weight: 800; }
+	textarea { width: 80%; height: 400px; max-width:800px; white-space: pre; overflow: auto; }
+</style>
+
+
+<p>All attributes are optional. you can something as simple as:</p>
+
+<div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
+
+<pre><tt>&lt;div class="discovery-search-widget"&gt;
+    &lt;a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW"&gt;Search Library Resources&lt;/a&gt;
+&lt;/div&gt;</tt></pre>
+</div>
+
+<p>... or complex by using every attribute available... if you want.</p>
+	<dl>
+		<dt>id</dt>
+		<dd><em>[unique element id]</em> - if it is not unique, the script will make it unique so there won't be conflicts</dd>
+
+		<dt>data-scope</dt>
+		<dd><em>author|title</em> - these will automatically add AuthorCombined() or TitleCombined() to the search query when submitted.</dd>
+
+		<dt>data-scope-content-type</dt>
+		<dd><em>BOOKS|VIDEO|AUDIO|MUSIC|[other facet value]</em> - BOOKS, VIDEO, AUDIO, and MUSIC (all upper and used alone) are predefined but customizable (see JavaScript Customization section below): BOOKS = "books"; VIDEO = "video"; AUDIO = "audio"; MUSIC = "scores"; example of 'other': data-scope-content-type="newspaper_articles"</dd>
+
+		<dt>data-scope-subj-terms</dt>
+		<dd><em>[comma separated values]</em> - Subject terms to go with each search</dd>
+
+		<dt>data-scope-date</dt>
+		<dd><em>[YYYY:YYYY]</em> - date in YYYY format ex: 2007:2015 searches between 2007 and 2015, 0:1996 searches from beginning to 1996, 1996:9999 will search after 1996.</dd>
+
+		<dt>data-scope-discipline</dt>
+		<dd><em>[discipline1,discipline2...]</em> - comma separated disciplines, or a single discipline: data-scope-discipline="Computer Science"</dd>
+
+		<dt>data-scope-fulltext</dt>
+		<dd><em>true|false</em> - include full text only. Not including this attribute defaults to FALSE</dd>
+
+		<dt>data-scope-scholarly</dt>
+		<dd><em>true|false</em> - include scholarly only (Peer Review). Not including this attribute defaults to FALSE</dd>
+
+		<dt>data-scope-local</dt>
+		<dd><em>true|false</em> - search within your catalog only. Not including this attribute defaults to FALSE</dd>
+
+		<dt>data-tagline</dt>
+		<dd><em>default|[custom text]</em> - set as "default" or to your own custom text. If you don't include this attribute, or if you leave it blank ("") no text will display in its place.</dd>
+
+		<dt>data-placeholder</dt>
+		<dd><em>default|[custom text]</em> - set as "default" or to your own custom text. If you don't include this attribute, or if you leave it blank ("") no text will display in its place.</dd>
+
+		<dt>data-advanced</dt>
+		<dd><em>default|[custom text]</em> - set as "default" or to your own custom text. If you don't include this attribute, or if you leave it blank ("") no text will display in its place.</dd>
+	</dl>
+
+<textarea>
+<!-- plain with default tagline and placeholder -->
+<div class="discovery-search-widget"
+    id="discoverySearchDefault"
+    data-placeholder="default"
+    data-advanced="default"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+
+<!-- example of title search for BOOKS -->
+<div class="discovery-search-widget"
+    id="discoverySearch001"
+    data-scope="title"
+    data-scope-content-type="BOOKS"
+    data-tagline="Type as much or as little of the title as you want:"
+    data-placeholder="Title keywords"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+
+<!-- plain with no placeholder or tags -->
+<div class="discovery-search-widget">
+<a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+
+<!-- comma separated content type -->
+<div class="discovery-search-widget"
+    id="discoverySearch125"
+    data-scope-content-type="newspaper_articles"
+    data-tagline="default"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+
+<script type="text/javascript" src="primo.js"></script>
+</textarea>
+
+
+<h2>JavaScript Customization</h2>
+	
+<p>The only variables you will need to change out of the box are the following:</p>
+
+	<dl>
+		<dt>ver</dt>
+		<dd><em>numbers</em> - some numbers to tell one version apart from another. Usefull when dealing with versioning to quickly tell if you are pulling the right file when debugging.</dd>
+	</dl>
+
+	<p><strong><tt>discoveryCustom.*</tt></strong></p>
+	<dl>
+		<dt>css</dt>
+		<dd><em>[path to css file]</em> - where is the primo.css file located? Best practice is to start with // not http or https (//yoursite.edu/[pathtocssfile])</dd>
+		
+		<dt>url</dt>
+		<dd><em>[https://your-primo.hosted.exlibrisgroup.com]</em> - the base URL to your Primo site. This SHOULD NOT include primo-explore/search?vid=YOURVIEW as that will be added automatically by the search box.</dd>
+		
+		<dt>instituion</dt>
+		<dd><em>INST_CODE</em> - the institution code for Primo. You can find this in Primo Back Office.</dd>
+		
+		<dt>vid</dt>
+		<dd><em>YOURVIEW</em> - the view for the institution. You can usually find this in the URL after a search: &amp;vid=YOURVIEW</dd>
+		
+		<dt>tab</dt>
+		<dd><em>default_tab</em> - the tab results should be in (usually default). You can usually find this in the URL after a search: &amp;tab=default_tab</dd>
+		
+		<dt>search_scope</dt>
+		<dd><em>yourcode</em> - the search scope. You can usually find this in the URL after a search: &amp;search_scope=yourcode.</dd>
+		
+		<dt>bulkSize</dt>
+		<dd><em>10</em> - the number of results you want returned per page in Primo.</dd>
+		
+		<dt>localParam</dt>
+		<dd><em>library|local|local2...etc</em> - depends how you want local defined (campus, city, library branch, etc). If you have a facet for School, Library, or Location, use it and see what is listed in the URL: &quot;&amp;facet=library,include,LIBRARYCODE&quot; (in this case it would be  &quot;library &quot;, the first part of the comma delimited value, lower case). Another example:  &quot;&amp;facet=local2,include,My Library&quot; (in this case it would be  &quot;local2 &quot;, the first part of the comma delimited value, lower case). Note, you can only define this once per script. So unless you are part of a consortium and want it scoped to only your school, or you are part of a larger library system but maintain a separate page for a particular branch, you probably won't use this.</dd>
+		
+		<dt>localDesc</dt>
+		<dd><em>some code or string</em> - this is paired with <tt>localParam</tt> and is the third value of the comma delimited set. For example, &quot;&amp;facet=library,include,LIBRARYCODE&quot; (in this case it would be &quot;LIBRARYCODE&quot;, the last part of the comma delimited value). Another example:  &quot;&amp;facet=local2,include,My Library&quot; (in this case it would be  &quot;My Library&quot;, the last part of the comma delimited value).</dd>
+
+		<dt>facet_books</dt>
+		<dd><em>[facet to map to]</em> - what facet do you want "BOOKS" to map to? Default is "books" but this might not be a facet in your set-up.</dd>
+		
+		<dt>facet_audio</dt>
+		<dd><em>[facet to map to]</em> - what facet do you want "AUDIO" to map to? Default is "audio" but this might not be a facet in your set-up.</dd>
+
+		<dt>facet_video</dt>
+		<dd><em>[facet to map to]</em> - what facet do you want "VIDEO" to map to? Default is "video" but this might not be a facet in your set-up.</dd>
+
+		<dt>facet_music</dt>
+		<dd><em>[facet to map to]</em> - what facet do you want "MUSIC" to map to? Default is "score" but this might not be a facet in your set-up.</dd>
+						
+	</dl>
+
+<textarea >
+var ver = "0.0.2-20170512";  // Just something to check for in the Browser Console
+                             // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
+                             // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
+                             // and should take a break
+								 
+	var discoveryCustom = { css: 'primo.css', // location of search box css file
+                            url: 'https://yoursite.primo.exlibrisgroup.com', // base URL to your primo instance
+                            instituion: 'YOUR_INSTITUTION',
+                            vid: 'YOURVIEW',
+                            tab: 'default_tab',
+                            search_scope: 'yourscope',
+                            bulkSize: '10',
+                            // facet=local1,include,My University Library
+                            localParam: 'local1', // for a localized search, what is the param? local1, local2?
+                            localDesc: 'University of Me', // the descriptor used for local resources
+                            facet_books: 'books', // can only include one material type, what type should BOOKS return?
+                            facet_audio: 'audio', // can only include one material type, what type should AUDIO return?
+                            facet_video: 'video', // can only include one material type, what type should VIDEO return?
+                            facet_music: 'score' // can only include one material type, what type should MUSIC return?
+                          };			  
+</textarea>
+
+<script type="text/javascript" src="primo.js"></script>
+
+</body>
+</html>
