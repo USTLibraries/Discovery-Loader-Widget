@@ -24,7 +24,6 @@
 								 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
 								 // and should take a break
 
-
 	var discoveryCustom = { css: 'summon.css', // location of search box css file
 							url: 'https://yoursite.summon.serialssolutions.com', // base URL to your Summon instance
 						    facet_books: ['Book / eBook','Book Chapter'], // can include more than one as an indexed array
@@ -523,9 +522,12 @@
 
 		var divs = document.getElementsByClassName("discovery-search-widget");
 
+		console.log(divs.length);
 		// Go through all .discovery-search-widgets and replace the inner HTML of the div
 		for( var i = 0, len = divs.length; i < len; i++ ) {
-			var sbID = divs[i].getAttribute("id");
+			var sbID = divs[i].getAttribute("id") + "-" + i;
+			
+			divs[i].setAttribute("id",sbID);
 
 			var nl = "\n";
 
@@ -533,7 +535,7 @@
 			var html = "<form class='discovery-search-box' action='" + discoveryCustom.url + "/search' target='_blank' "
 					 + "      name='summonSearch' method='GET' id='"+sbID+"-form'>" + nl
 					 + "   <label for='"+sbID+"-searchfield'>Search Summon</label>" + nl
-					 + "   <input placeholder='Search for articles, books, and more' class='discovery-search-field' "
+					 + "   <input placeholder='Search' class='discovery-search-field' "
 					 + "      autocomplete='off' name='s.q' id='"+sbID+"-searchfield' type='search'> " + nl
 					 + "   <input value='true' name='spellcheck' type='hidden'> " + nl
 					 + "   <input value='true' name='keep_r' type='hidden'> " + nl
