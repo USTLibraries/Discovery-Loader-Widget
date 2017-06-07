@@ -95,7 +95,7 @@
 	
 	<ol>
 		<li>Download and customize the primo.js file (see JavaScript Customization below)</li>
-		<li>Download and customize the primo.css file (basically only the color of the button)</li>
+		<li>Download and customize the primo.css file (basically the color of the button at the very least unless you like purple)</li>
 		<li>Place primo.js and primo.css files on your server</li>
 		<li>Add DIV HTML, JavaScript src, and (optional) CSS link to your pages.</li>
 		<li>Be sure the links in your DIV tags point to your Summon search</li>
@@ -316,6 +316,23 @@ one content type at a time.</p>
 ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
+<h2>Journal Title Search (Primo)</h2>
+
+	<p>If <tt>data-scope</tt> is set to <tt>journal</tt> the search box will send users to the Journal Titles search in Primo.</p>
+	
+<div class="discovery-search-widget"
+    id="discoverySearchJournal"
+    data-scope="journal"
+    data-tagline="Find journals and newspapers subscribed to by the library"
+    data-placeholder="Journal title"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+
+	<h2>Course Reserves (coming soon)</h2>
+	
+	<p>Haven't started development on this one yet. But similar to the Journal Title search. data-scope = course or instructor or course id or department.</p>
+
+
 	</div>
 
 
@@ -348,7 +365,7 @@ one content type at a time.</p>
 		<dd><em>[unique element id]</em> - if it is not unique, the script will make it unique so there won't be conflicts</dd>
 
 		<dt>data-scope</dt>
-		<dd><em>author|title</em> - these will automatically add AuthorCombined() or TitleCombined() to the search query when submitted.</dd>
+		<dd><em>author|title|journal</em> - these will automatically add AuthorCombined() or TitleCombined() to the search query when submitted. Note that for journal searches all other data-scope- are ignored</dd>
 
 		<dt>data-scope-content-type</dt>
 		<dd><em>BOOKS|VIDEO|AUDIO|MUSIC|[other facet value]</em> - BOOKS, VIDEO, AUDIO, and MUSIC (all upper and used alone) are predefined but customizable (see JavaScript Customization section below): BOOKS = "books"; VIDEO = "video"; AUDIO = "audio"; MUSIC = "scores"; example of 'other': data-scope-content-type="newspaper_articles"</dd>

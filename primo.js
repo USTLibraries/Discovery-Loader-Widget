@@ -23,10 +23,11 @@
 	 * CUSTOM VARIABLES
 	 */
 	
-	var ver = "0.0.22-20170512"; // Just something to check for in the Browser Console
+	var ver = "0.0.23-20170607"; // Just something to check for in the Browser Console
 	                             // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
 								 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
 								 // and should take a break
+
 
 	var discoveryCustom = { css: 'primo.css', // location of search box css file
 							url: 'https://yoursite.primo.exlibrisgroup.com', // base URL to your primo instance
@@ -43,6 +44,7 @@
 							facet_video: 'video', // can only include one material type, what type should VIDEO return?
 							facet_music: 'score' // can only include one material type, what type should MUSIC return?
 						};
+	
 	/* 
 	 * END CUSTOM VARIABLES
 	 * Yep, that's it. No other code changes are necessary in this .js file
@@ -426,6 +428,17 @@
 						if( searchTagline !== null ) { $(this).prepend(searchTagline); } // before form
 						if( searchAdvanced !== null ) { $(this).append(searchAdvanced); } // after form
 						if( myAutosuggest !== null ) { $(this).append(myAutosuggest); } // after form
+						
+						temp = $(this).attr("data-scope");
+						if ( isTrue(temp) && temp.toLowerCase() === "journal") {
+							// if it is a journal box, modify it.... just easier to do it all here (just takes a millisecond)
+							$(searchForm).find("input[name='search_scope']").detach(); // remove the scope - search_scope
+							$(searchForm).find("input[name='mode']").detach();// remove the mode
+							// TODO, MAYBE: there's a few more to detach
+							$(searchForm).find("input[name='tab']").attr("value","jsearch_slot"); // switch tab over to journal
+							$(searchForm).attr("action", discoveryCustom.url + "/primo-explore/jsearch");
+							$(searchForm).append(createHiddenField("journals", "", {id: searchId+"-primoQueryjournals"}));// add journals	
+						}				
 
 
 
@@ -588,8 +601,13 @@ function searchPrimoEnhanced(myId) {
 	if ( scope !== null ) {
 		if (scope.toLowerCase() === "author") { field = "creator"; }
 		else if (scope.toLowerCase() === "title") { field = "title"; }
+		else if (scope.toLowerCase() === "journal") { // perform a journal title search
+			field = "any";
+			document.getElementById(myId+"-primoQueryjournals").value = "any," + document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " "); 
+		} 
 	} 
 
 	document.getElementById(myId+"-primoQuery").value = field+",contains," + document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " ");
+	
 	document.forms[myId+"-searchForm"].submit();
 }
