@@ -1,6 +1,8 @@
 # Discovery-Widget
 Generate a search box for your library discovery layer. Currently available for Summon and Primo but additional services/customizations may be added. Just look at the primo.js and summon.js and see how they differ and generate to learn how.
 
+Runs with jQuery but falls back to a regular search if only javascript is available. (And if no JavaScript just a link to your primo instance so it is pretty fail safe). It is also accessibility compliant, and works across browsers, is responsive, and even takes into account the [search] keyboard button in iOS.
+
 ## Get Started
 
 1. Use a DIV tag from one of the example HTML files.
