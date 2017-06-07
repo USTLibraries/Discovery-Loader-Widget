@@ -12,13 +12,19 @@ Generate a search box for your library discovery layer. Currently available for 
 
 Use the summon.js and summon.css files
 
+Uses the same DIV tag structure as the Primo DIV. See example-summon.html for documentation.
+
 ## Primo Search
 
 New! May 2017! Now Primo Search boxes are supported!
 
+New! June 2017! Now Primo Journal Title Search boxes are supported!
+
+Coming Late Summer 2017: course reserve searches and some additional CSS enhancements.
+
 Just use primo.js and primo.css files
 
-Uses the same DIV tag structure as before so switching to Primo from Summon (or vice versa) is easy! (More documentation coming soon)
+Uses the same DIV tag structure as before so switching to Primo from Summon (or vice versa) is easy! See example-primo.html for documentation.
 
 ## Installation
 
