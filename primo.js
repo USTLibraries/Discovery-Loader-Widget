@@ -1,7 +1,7 @@
 /*
 	Discovery Loader Widget (Primo)
 	University of St. Thomas Libraries
-	May 12, 2017
+	June 08, 2017
 	
 	Full Code (including non-minified) and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
@@ -23,12 +23,13 @@
 	 * CUSTOM VARIABLES
 	 */
 	
-	var ver = "0.0.23-20170607"; // Just something to check for in the Browser Console
+	var ver = "0.0.24-20170607"; // Just something to check for in the Browser Console
 	                             // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
 								 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
 								 // and should take a break
 
-
+	// Wondering what some of these values should be?
+	// Do a search in Primo and look at the query string in the URL of the results page
 	var discoveryCustom = { css: 'primo.css', // location of search box css file
 							url: 'https://yoursite.primo.exlibrisgroup.com', // base URL to your primo instance
 							instituion: 'YOUR_INSTITUTION',
@@ -36,15 +37,15 @@
 							tab: 'default_tab',
 							search_scope: 'yourscope',
 							bulkSize: '10',
-							// facet=local1,include,My University Library
+							// look at this in the query string: facet=local1,include,My University Library
 							localParam: 'local1', // for a localized search, what is the param? local1, local2?
 							localDesc: 'University of Me', // the descriptor used for local resources
+							// customized mapping
 							facet_books: 'books', // can only include one material type, what type should BOOKS return?
 							facet_audio: 'audio', // can only include one material type, what type should AUDIO return?
 							facet_video: 'video', // can only include one material type, what type should VIDEO return?
 							facet_music: 'score' // can only include one material type, what type should MUSIC return?
 						};
-	
 	/* 
 	 * END CUSTOM VARIABLES
 	 * Yep, that's it. No other code changes are necessary in this .js file
@@ -430,14 +431,21 @@
 						if( myAutosuggest !== null ) { $(this).append(myAutosuggest); } // after form
 						
 						temp = $(this).attr("data-scope");
-						if ( isTrue(temp) && temp.toLowerCase() === "journal") {
-							// if it is a journal box, modify it.... just easier to do it all here (just takes a millisecond)
-							$(searchForm).find("input[name='search_scope']").detach(); // remove the scope - search_scope
-							$(searchForm).find("input[name='mode']").detach();// remove the mode
-							// TODO, MAYBE: there's a few more to detach
-							$(searchForm).find("input[name='tab']").attr("value","jsearch_slot"); // switch tab over to journal
-							$(searchForm).attr("action", discoveryCustom.url + "/primo-explore/jsearch");
-							$(searchForm).append(createHiddenField("journals", "", {id: searchId+"-primoQueryjournals"}));// add journals	
+						if ( isTrue(temp) ) {
+							if (temp.toLowerCase() === "journal") {
+								console.log("DISCOVERY: Morphing ["+searchId+"] into a Journal Title search box");
+								// if it is a journal box, modify it.... just easier to do it all here (just takes a millisecond)
+								$(searchForm).find("input[name='search_scope']").detach(); // remove the scope - search_scope
+								$(searchForm).find("input[name='mode']").detach();// remove the mode
+								// TODO, MAYBE: there's a few more to detach
+								$(searchForm).find("input[name='tab']").attr("value","jsearch_slot"); // switch tab over to journal
+								$(searchForm).attr("action", discoveryCustom.url + "/primo-explore/jsearch");
+								$(searchForm).append(createHiddenField("journals", "", {id: searchId+"-primoQueryjournals"}));// add journals	
+							} else if (temp.toLowerCase().substr(0,6) === "course") {
+								console.log("DISCOVERY: Morphing ["+searchId+"] into a Course Reserve search box");
+								$(searchForm).find("input[name='search_scope']").attr("value", discoveryCustom.search_scope + "_course");
+								$(searchForm).find("input[name='tab']").attr("value","course_tab");
+							}
 						}				
 
 
@@ -546,14 +554,14 @@
 
 		// Go through all .discovery-search-widgets and replace the inner HTML of the div
 		for( var i = 0, len = divs.length; i < len; i++ ) {
-			var sbID = divs[i].getAttribute("id");
+			var sbID = divs[i].getAttribute("id") + "-js" + i; // number to make unique
 
 			var nl = "\n";
 
 			// This is the plain HTML that will be placed in the document
 			var html = "<form class='discovery-search-box' action='" + discoveryCustom.url + "/primo-explore/search' " + nl
 					 + "      target='_blank' enctype='application/x-www-form-urlencoded; charset=utf-8' onsubmit=\"searchPrimo('"+sbID+"')\" " + nl
-					 + "      name='primoSearch' method='GET' id='"+sbID+"-form'>" + nl
+					 + "      name='primoSearch' method='GET' id='"+sbID+"-searchform'>" + nl
 					 + "   <label for='"+sbID+"-primoQueryTemp'>Search</label>" + nl
 					 + "   <input placeholder='Search for articles, books, and more' class='discovery-search-field' " + nl
 					 + "      autocomplete='off' name='primoQueryTemp' id='"+sbID+"-primoQueryTemp' type='search'> " + nl
@@ -586,7 +594,7 @@ function searchPrimo(myId) {
 	"use strict";
 
 	document.getElementById(myId+"-primoQuery").value = "any,contains," + document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " ");
-	document.forms[myId+"-searchForm"].submit();
+	document.forms[myId+"-searchform"].submit();
 }
 
 // from primo documentation, modified to allow multiple search boxes (used by code below if jQuery available)
@@ -599,12 +607,38 @@ function searchPrimoEnhanced(myId) {
 	var field = "any";
 	var scope = document.getElementById(myId).getAttribute("data-scope");
 	if ( scope !== null ) {
-		if (scope.toLowerCase() === "author") { field = "creator"; }
-		else if (scope.toLowerCase() === "title") { field = "title"; }
-		else if (scope.toLowerCase() === "journal") { // perform a journal title search
-			field = "any";
-			document.getElementById(myId+"-primoQueryjournals").value = "any," + document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " "); 
-		} 
+		
+		switch (scope.toLowerCase()) {
+			case "author":
+				field = "creator";
+				break;
+		
+			case "title":
+				field = "title";
+				break;
+				
+			case "journal":
+				field = "any";
+				var tval = document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " ");
+				document.getElementById(myId+"-primoQueryjournals").value = "any," + tval;
+				break;
+				
+			case "course_name":
+				field = "crsname";
+				break;
+				
+			case "course_instr":
+				field = "crsinstrc";
+				break;
+				
+			case "course_id":
+				field = "crsid";
+				break;
+				
+			case "course_dept":
+				field = "crsdept";
+				break;
+		}
 	} 
 
 	document.getElementById(myId+"-primoQuery").value = field+",contains," + document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " ");
