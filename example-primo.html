@@ -328,19 +328,63 @@ one content type at a time.</p>
 ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
-	<h2>Course Reserves (coming soon)</h2>
+	<h2>Course Reserves (beta)</h2>
 	
-	<p>Haven't started development on this one yet. But similar to the Journal Title search. data-scope = course or instructor or course id or department.</p>
 
+	<p>Similar to the Journal Title search. data-scope = course, course_instr, course_id, course_name, or course_dept.</p>
+	<p>It will be in beta for a while as I don't currently have any course data to test against. Hopefully out of BETA by the end of Summer 2017.</p>
 
+	<h3>Course Reserves by Keyword</h3>
+<div class="discovery-search-widget"
+    id="discoverySearchCourse"
+    data-scope="course"
+    data-tagline="Search course reserves by keyword"
+    data-placeholder="Course, book, article, or media keywords"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+
+	<h3>Course Reserves by Course Name</h3>
+<div class="discovery-search-widget"
+    id="discoverySearchCourseName"
+    data-scope="course_name"
+    data-tagline="Search course reserves by course name"
+    data-placeholder="Course name"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+	
+	<h3>Course Reserves by Instructor</h3>
+<div class="discovery-search-widget"
+    id="discoverySearchCourseInstr"
+    data-scope="course_instr"
+    data-tagline="Search course reserves by instructor"
+    data-placeholder="Instructor name"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+	
+	
+	<h3>Course Reserves by Course ID</h3>
+<div class="discovery-search-widget"
+    id="discoverySearchCourseByID"
+    data-scope="course_id"
+    data-tagline="Search course reserves by Course ID"
+    data-placeholder="Course ID"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+	
+		
+		<h3>Course Reserves by Department</h3>
+<div class="discovery-search-widget"
+    id="discoverySearchCourseDept"
+    data-scope="course_dept"
+    data-tagline="Search course reserves by department"
+    data-placeholder="Department name"
+><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+	
 	</div>
 
 
 <h2>What are the div attributes available?</h2>
 
 	<P>I used the <a href="https://knowledge.exlibrisgroup.com/Primo/Product_Documentation/New_Primo_User_Interface/New_UI_Customization_-_Best_Practices#Creating_a_Search_Box_With_Deep_Links_to_the_New_UI">Primo Search Box Documentation</a>, trial and error using the available facets, and previous experience with Matthew Reidsma's (GVSU) <a href="https://github.com/mreidsma/Custom-Summon-Searches">Custom Summon Searches</a> to come up with these.</P>
-	<p>The nice thing is that the DIV attributes are interchangable between summon.js and primo.js which was the intent. The only difference is the way date
-		scope is formatted (YYYY:YYYY for Primo, YYYY-MM-DD:YYYY-MM-DD for Summon) and the fact that Primo can only take 1 material type.</p>
+	<p>The nice thing is that the DIV attributes are interchangable between summon.js and primo.js which was the intent. The main difference is the way date
+		scope is formatted (YYYY:YYYY for Primo, YYYY-MM-DD:YYYY-MM-DD for Summon) and the fact that Primo can only take 1 material type. Also, Primo
+		allows added functionality such as Course Reserves and Journal Title search so additional options for data-scope are available.</p>
 
 <h3>div attributes:</h3>
 
@@ -365,7 +409,7 @@ one content type at a time.</p>
 		<dd><em>[unique element id]</em> - if it is not unique, the script will make it unique so there won't be conflicts</dd>
 
 		<dt>data-scope</dt>
-		<dd><em>author|title|journal</em> - these will automatically add AuthorCombined() or TitleCombined() to the search query when submitted. Note that for journal searches all other data-scope- are ignored</dd>
+		<dd><em>author|title|journal|course|course_id|course_name|course_instr|course_dept</em> - these will automatically add AuthorCombined() or TitleCombined() to the search query when submitted. Note that for journal searches all other data-scope- are ignored. Any data-scope value starting with &quot;course&quot; will be treated as a Course Reserve Search.</dd>
 
 		<dt>data-scope-content-type</dt>
 		<dd><em>BOOKS|VIDEO|AUDIO|MUSIC|[other facet value]</em> - BOOKS, VIDEO, AUDIO, and MUSIC (all upper and used alone) are predefined but customizable (see JavaScript Customization section below): BOOKS = "books"; VIDEO = "video"; AUDIO = "audio"; MUSIC = "scores"; example of 'other': data-scope-content-type="newspaper_articles"</dd>
