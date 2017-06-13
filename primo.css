@@ -1,7 +1,7 @@
 /*
 	Discovery Loader Widget
 	University of St. Thomas Libraries
-	June 08, 2017
+	June 12, 2017
 	
 	Full Code (including non-minified) and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
@@ -11,7 +11,87 @@
 	
 */
 
-@charset "utf-8";
+/* PRIMARY CUSTOM COLORS - the main thing to change is really the button color: */
+.discovery-search-widget .discovery-search-button {
+     background-color: #510c76; /* Search button background color */
+	 color: white; /* Search button text color */
+}
+/* END PRIMARY CUSTOM COLORS */
+
+/* SEARCH FIELD */
+.discovery-search-widget .discovery-search-field {
+	width: 100% !important;
+	height: 37px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-appearance: none; /* gets rid of large round corners on iOS - changing default UI behavior is debatable */
+	border-radius: 0; /* gets rid of the small round corners on iOS - changing default UI behavior is debatable */
+	border: 1px solid #AEAEAE;
+	font-family: inherit;
+	box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+	display: block;
+	font-size: 14px;
+	margin: 0 .2rem 0 0;
+	padding: 8px 120px 8px 30px;
+	transition: all .15s linear;
+    color: #000;
+    background: transparent url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAA5ElEQVQokZXSXUvDQBSE4UehCmqqonit1C8C1d+hxFQtUkQQa++iRv3/N170xKY1DThwINlhdt/JhpnWcI4MY0yQIw2vUV3coIx5jvmI9wzJYmg9Ql8Y4QR72EcPD/iO0zv1YIpPDLHVQJOEV+KibuR4w9GyHjhGEWSr1eIET9htCW7gNar8UlXBnf8GB4F62BLsBWpeR01Niw9j50VthlegXzc6ZtdxjzPTe93GaYTe8aLhO3QDuQzsSUwRM471LAjm1MFl9BjhMZ77OMCt2Y/wJ1wpCYqVBaq7qHS9LNi24QBXP03LHWbLFYNlAAAAAElFTkSuQmCC") no-repeat scroll 10px 10px !important;
+}
+/* END SEARCH FIELD */
+
+/* BUTTON */
+.discovery-search-widget .discovery-search-button {
+     font-size: 16px !important;
+     width: 116px;
+     height: 37px;
+	 top: -37px;
+	 margin-bottom: -37px; /* counteract the reposition */
+	 float: right;
+	 position: relative;
+     border: 1px solid #CCC !important;
+	 cursor: pointer;
+	-webkit-appearance: none; /* gets rid of large round corners on iOS - changing default UI behavior is debatable */
+	border-radius: 0; /* gets rid of the small round corners on iOS - changing default UI behavior is debatable */
+}
+/* END BUTTON */
+
+/* ACCESSIBLE LABEL - Give the search input field a meaningful label */
+.discovery-search-widget label, span.ui-helper-hidden-accessible {
+	position:absolute;
+	left:-10022px; /* Best not to change this, required for css autoload check */
+	top:auto;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+}
+/* END ACCESSIBLE LABEL */
+
+/* TAGLINE - The text that shows up on top of the search box */
+.discovery-search-widget p.discovery-tagline {
+	margin-top: 1rem;
+	font-weight: 500;
+	font-family: truenoregular,Arial,sans-serif;
+	margin-bottom: 0px;
+}
+/* END TAGLINE */
+
+/* ADDITIONAL LINKS - Advanced or Login Links under search box */
+.discovery-search-widget ul.discovery-links {
+	font-family: truenoregular,Arial,sans-serif;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.discovery-search-widget ul.discovery-links li {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.discovery-search-widget ul.discovery-links li:not(:last-child):after {
+	content: " | ";
+}
+/* END ADDITIONAL LINKS */
 
 /* AUTO COMPLETE CSS */
 .discovery-search-widget .ui-autocomplete {
@@ -20,6 +100,8 @@
 
 .discovery-search-widget .ui-corner-all {
 	-moz-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+
 }
 
 .discovery-search-widget .ui-widget-content {
@@ -80,85 +162,3 @@
 }
 
 /* END AUTOCOMPLETE */
-
-.discovery-search-widget .discovery-search-field {
-	width: 100% !important;
-	display: inline-block !important;
-	-webkit-appearance: none;
-	border-radius: 0;
-	background-color: #fff;
-	font-family: inherit;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #ccc;
-	box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
-	color: rgba(0,0,0,.75);
-	display: block;
-	font-size: 14px;
-	margin: 0 0 0 0;
-	padding: 8px 120px 8px 8px;
-	height: 37px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	transition: all .15s linear;
-}
-
-
-
-/* SEARCH FIELDS */
-.discovery-search-widget .discovery-search-field, 
-.discovery-search-widget .discovery-search-field:focus {
-    background: transparent -moz-linear-gradient(center top, #FFF, #EBEBEB) repeat scroll 0% 0%;
-    border: 1px solid #AEAEAE;
-    color: #000;
-    background: transparent url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAA5ElEQVQokZXSXUvDQBSE4UehCmqqonit1C8C1d+hxFQtUkQQa++iRv3/N170xKY1DThwINlhdt/JhpnWcI4MY0yQIw2vUV3coIx5jvmI9wzJYmg9Ql8Y4QR72EcPD/iO0zv1YIpPDLHVQJOEV+KibuR4w9GyHjhGEWSr1eIET9htCW7gNar8UlXBnf8GB4F62BLsBWpeR01Niw9j50VthlegXzc6ZtdxjzPTe93GaYTe8aLhO3QDuQzsSUwRM471LAjm1MFl9BjhMZ77OMCt2Y/wJ1wpCYqVBaq7qHS9LNi24QBXP03LHWbLFYNlAAAAAElFTkSuQmCC") no-repeat scroll 10px 10px !important;
-    padding-left: 30px !important;
-	margin-right: .2rem;
-}
-
-
-/* SUMMON BUTTONS */
-.discovery-search-widget .discovery-search-button {
-     background-color: #510c76;
-	 color: white;
-     font-size: 16px !important;
-     width: 116px;
-     height: 37px;
-	 top: -37px;
-	 float: right;
-	 position: relative;
-     border: 1px solid #CCC !important;
-	 cursor: pointer;
-}
-
-.discovery-search-widget label, span.ui-helper-hidden-accessible {
-	position:absolute;
-	left:-10022px;
-	top:auto;
-	width:1px;
-	height:1px;
-	overflow:hidden;
-}
-
-.discovery-search-widget p.discovery-tagline {
-	margin-top: 1rem;
-	font-weight: 500;
-	font-family: truenoregular,Arial,sans-serif;
-	margin-bottom: 0px;
-}
-
-.discovery-search-widget ul.discovery-links {
-	font-family: truenoregular,Arial,sans-serif;
-	margin: 0 0 0 0;
-	padding: 0 0 0 0;
-}
-
-.discovery-search-widget ul.discovery-links li {
-	display: inline-block;
-	margin-right: 5px;
-}
-
-.discovery-search-widget ul.discovery-links li:not(:last-child):after {
-	content: " | ";
-}
