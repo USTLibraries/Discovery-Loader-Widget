@@ -1,15 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Discovery Loader Widget (Summon) Example Page</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Discovery Loader Widget (Summon) Example Page</title>
 
 
-<meta name="viewport" content="width=device-width">
+	<meta name="viewport" content="width=device-width">
 
-<!-- Bring in the JQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<!-- Bring in the JQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+	<!-- comment out when testing auto load -->
+	<link rel="stylesheet" type="text/css" href="summon.css">
+
 </head>
 
 <body>
@@ -21,7 +25,7 @@
 
 	<h2>Example</h2>
 	<h3>Code</h3>
-	
+
 <div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
 <pre><tt>
 &lt;link href="summon.css" type="text/css"&gt;&lt;!-- optional, code will include on own if not present --&gt;
@@ -60,7 +64,7 @@
 <ul>
   <li>A place to host your css and js files</li>
   <li>A basic understanding of 3 HTML tags (<tt>DIV</tt>, <tt>A</tt>, <tt>SCRIPT</tt>), tag attributes (<tt>data-</tt>, <tt>href</tt>, <tt>src</tt>), and setting variables in JavaScript (Don't worry, it's all heavily commented)</li>
-  <li>jQuery and jQuery UI loaded on the page (works without autosuggest if no jQuery UI). If you need to add jQuery to your HEAD yourself: 
+  <li>jQuery and jQuery UI loaded on the page (works without autosuggest if no jQuery UI). If you need to add jQuery to your HEAD yourself:
    <pre>
    &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"&gt;&lt;/script&gt;
    &lt;script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"&gt;&lt;/script&gt;</pre></li>
@@ -91,7 +95,7 @@
 
 
 	<h2>Installation</h2>
-	
+
 	<ol>
 		<li>Download and customize the summon.js file (see JavaScript Customization below)</li>
 		<li>Download and customize the summon.css file (basically only the color of the button)</li>
@@ -103,13 +107,13 @@
 <p>Basic format that we copy and paste into your CMS is:</p>
 
 <p>JavaScript in HEAD (or at end of BODY):</p>
-	
+
 <div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
 <pre><tt>&lt;script type="text/javascript" src="summon.js"&gt;&lt;/script&gt;</tt></pre>
 </div>
 
 <p>CSS in HEAD (or include CSS within your main css, or not at all since the script will check for it an include it automatically):</p>
-	
+
 <div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
 <pre><tt>&lt;link href="summon.css" type="text/css"&gt;</tt></pre>
 </div>
@@ -141,8 +145,8 @@
 
 	<h3>Predefined Scopes</h3>
 	<p>Content type labels differ and you may want to easily reclassify 3 of the large ones such as BOOKS, AUDIO, and VIDEO. These are defined in the custom section of the JavaScript (summon.js) file. (See JavaScript Customization below)</p>
-	
-	
+
+
 <h4>BOOKS</h4>
 
 <!-- books keyword search box -->
@@ -414,7 +418,7 @@
 
 
 <h2>JavaScript Customization</h2>
-	
+
 <p>The only variables you will need to change out of the box are the following:</p>
 
 	<dl>
@@ -426,33 +430,33 @@
 	<dl>
 		<dt>css</dt>
 		<dd><em>[path to css file]</em> - where is the summon.css file located? Best practice is to start with // not http or https (//yoursite.edu/[pathtocssfile])</dd>
-		
+
 		<dt>url</dt>
 		<dd><em>[https://yoursite.summon.serialssolutions.com]</em> - the base URL to your Summon site. Should lead to a search page, not the results page.</dd>
-		
+
 		<dt>facet_books</dt>
 		<dd><em>[array of facets]</em> - what facets do you want to use to search for BOOKS? This is expressed in JavaScript indexed array notation. A single facet: ['Book / eBook'] or multiple: ['Book / eBook','Book Chapter']</dd>
-		
+
 		<dt>facet_audio</dt>
 		<dd><em>[array of facets]</em> - what facets do you want to use to search for AUDIO? This is expressed in JavaScript indexed array notation. A single facet: ['Audio Recording'] or multiple: ['Audio Recording','Streaming Audio']</dd>
 
 		<dt>facet_video</dt>
 		<dd><em>[array of facets]</em> - what facets do you want to use to search for VIDEO? This is expressed in JavaScript indexed array notation. A single facet: ['Video Recording'] or multiple: ['Video Recording','Streaming Video']</dd>
-			
+
 	</dl>
 
 <textarea >
 var ver = "1.1.5-20170512";  // Just something to check for in the Browser Console
-                             // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
+                             // Does nothing else except keep you from pulling your hair out when you wonder if the code changes
                              // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
                              // and should take a break
-								 
+
 var discoveryCustom = { css:         'summon.css',                                   // location of search box css file
                         url:         'https://yoursite.summon.serialssolutions.com', // base URL to your Summon instance
                         facet_books: ['Book / eBook','Book Chapter'],                // can include more than one as an indexed array
                         facet_audio: ['Audio Recording','Streaming Audio'],          // can include more than one as an indexed array
                         facet_video: ['Video Recording','Streaming Video']           // can include more than one as an indexed array
-                      };				  
+                      };
 </textarea>
 
 <script type="text/javascript" src="summon.js"></script>

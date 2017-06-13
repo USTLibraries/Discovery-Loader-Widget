@@ -23,10 +23,10 @@
 	 * CUSTOM VARIABLES
 	 */
 	
-	var ver = "0.0.24-20170607"; // Just something to check for in the Browser Console
-	                             // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
-								 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
-								 // and should take a break
+	var version = "0.0.26-20170612"; // Just something to check for in the Browser Console
+	                                 // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
+									 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
+								 	 // and should take a break
 
 	// Wondering what some of these values should be?
 	// Do a search in Primo and look at the query string in the URL of the results page
@@ -46,37 +46,70 @@
 							facet_video: 'video', // can only include one material type, what type should VIDEO return?
 							facet_music: 'score' // can only include one material type, what type should MUSIC return?
 						};
+
 	/* 
 	 * END CUSTOM VARIABLES
 	 * Yep, that's it. No other code changes are necessary in this .js file
 	 ***************************************************************** */
 
-	console.log("DISCOVERY: Loading Discovery search box (Primo: ver "+ver+")...");
+	var code    = "github.com/USTLibraries/Discovery-Loader-Widget";
+	var handle  = "DISCOVERY";
+	var name    = "Discovery Loader Widget (Primo)";
+	var silent  = false;
+	
+		/* =====================================================================
+		debug()
+
+		If not silenced, outputs text pased to it to console.log 
+		
+		Need a line number? In your code use debug(yourmessage + " - Line:"+ (new Error()).lineNumber );
+
+		This function has a companion variable: silent
+	*/
+	var debug = function( text ) {
+
+		// as long as we aren't silenced (silent === false)...
+		if( !silent ) {
+			var d = new Date();
+			var ts = d.getHours() +":"+ d.getMinutes() +":"+ d.getSeconds() +"."+ d.getMilliseconds();
+			console.log(handle+" ["+ts+"] : " + text);
+		}
+	};
 	
 	var cssCheck = function() {
 
 		// load in the css, but check first to make sure it isn't already loaded
 		// we do this rather than check for the file because the search box css could have been merged into another file, so we check css properties instead
-		// just so long as ".discovery-search-widget label { left: -10000px; }" doesn't change!
+		// just so long as ".discovery-search-widget label { left: -10022px; }" doesn't change!
 		var elem = document.getElementsByClassName("discovery-search-widget");
 
-		if (elem.length > 0 && elem[0].getElementsByTagName("label")[0].style.left !== "-10000px" ) {
-			console.log("DISCOVERY: Adding css: " + discoveryCustom.css );
-			var css=document.createElement('link');
-			css.type='text/css';
-			css.rel='stylesheet';
-			css.href= discoveryCustom.css;
-			document.getElementsByTagName('head')[0].appendChild(css);
+		if (elem.length > 0) {
+			
+			var myTempStyle = elem[0].getElementsByTagName("label")[0];
+			var theCSSprop = window.getComputedStyle(myTempStyle,null).getPropertyValue("left");
+
+			if ( theCSSprop !== "-10022px" ) {
+				debug("Adding css: " + discoveryCustom.css );
+				var css=document.createElement('link');
+				css.type='text/css';
+				css.rel='stylesheet';
+				css.href= discoveryCustom.css;
+				document.getElementsByTagName('head')[0].appendChild(css);
+			} else {
+				debug("Discovery css detected");
+			}
 		}
 
 	};
+	
+	debug("Loaded "+name+" ("+code+") [ver"+version+"]"); 
 
 
 	// check for jQuery, if not exist, just place a plain javascripted search box (no scoping)
 	// this entire script could be re-written so as to not use jQuery, but it serves my purpose
 	if (  typeof($) !== "undefined" ) {
 		$(document).ready( function(){
-
+			
 			(function( $ ) {
 
 				$.fn.discoverySearchWidget = function() {
@@ -113,7 +146,7 @@
 
 						// make sure the ID on the element is unique, change it if not
 						if( !isTrue(searchId) || !isUniqueID(searchId) ) {
-							console.log("DISCOVERY: Search Widget with no-ID/non-unique ID detected ("+searchId+")... assigning a unique ID");
+							debug("Search Widget with no-ID/non-unique ID detected ("+searchId+")... assigning a unique ID");
 							if( !isTrue(searchId) ) { searchId = "discoverySearch"; }
 
 							// select a new id
@@ -126,7 +159,7 @@
 							searchId = newId;
 							$(this).attr("id",searchId);
 
-							console.log("DISCOVERY: Search Widget id reassigned: " + searchId);
+							debug("Search Widget id reassigned: " + searchId);
 
 						}
 
@@ -376,13 +409,51 @@
 							if ( !isDefault(temp) ) { s = temp;	}
 
 							// Create the advanced search HTML tag
-							searchAdvanced = document.createElement("p");
-							$(searchAdvanced).addClass("discovery-advanced");	
+							searchAdvanced = document.createElement("li");
 
 							var a = document.createElement("a");
 							$(a).attr("href",discoveryCustom.url + "/primo-explore/search?mode=advanced&vid=" + discoveryCustom.vid);
 							$(a).html(s);
 							$(a).appendTo(searchAdvanced);
+						}
+
+						/* *****************************************************************
+						 * Create the account login link
+						 */
+						
+						var myAccountLink = null;
+						temp = $(this).attr("data-login"); // grab the data attribute
+						if( isTrue(temp) ){
+
+							// default advanced search link text (if data-advanced is "default")
+							var s = "My Account";
+
+							// Use default or do we have something in data-advanced attribute?
+							if ( !isDefault(temp) ) { s = temp;	}
+
+							// Create the advanced search HTML tag
+							myAccountLink = document.createElement("li");
+
+							var a = document.createElement("a");
+							$(a).attr("href",discoveryCustom.url + "/primo-explore/account?section=overview&vid=" + discoveryCustom.vid);
+							$(a).html(s);
+							$(a).appendTo(myAccountLink);
+						}
+
+						/* *****************************************************************
+						 * Create the discovery links for Advanced Search and My Account
+						 * These show up under the search box
+						 */
+						
+						var discoveryLinks = null;
+						if ( myAccountLink !== null || searchAdvanced !== null) {
+							
+							discoveryLinks = document.createElement("ul");
+							$(discoveryLinks).addClass("discovery-links");
+							
+							if( searchAdvanced !== null ) { $(searchAdvanced).appendTo(discoveryLinks); } // add Advanced link
+							if( myAccountLink !== null ) { $(myAccountLink).appendTo(discoveryLinks); } // add Account link							
+
 						}
 
 						/* *****************************************************************
@@ -427,13 +498,13 @@
 						// assemble the discovery box
 						$(this).html(searchForm); // replace placeholder a tag with form
 						if( searchTagline !== null ) { $(this).prepend(searchTagline); } // before form
-						if( searchAdvanced !== null ) { $(this).append(searchAdvanced); } // after form
+						if( discoveryLinks !== null ) { $(this).append(discoveryLinks); } // after form
 						if( myAutosuggest !== null ) { $(this).append(myAutosuggest); } // after form
 						
 						temp = $(this).attr("data-scope");
 						if ( isTrue(temp) ) {
 							if (temp.toLowerCase() === "journal") {
-								console.log("DISCOVERY: Morphing ["+searchId+"] into a Journal Title search box");
+								debug("Morphing ["+searchId+"] into a Journal Title search box");
 								// if it is a journal box, modify it.... just easier to do it all here (just takes a millisecond)
 								$(searchForm).find("input[name='search_scope']").detach(); // remove the scope - search_scope
 								$(searchForm).find("input[name='mode']").detach();// remove the mode
@@ -442,7 +513,7 @@
 								$(searchForm).attr("action", discoveryCustom.url + "/primo-explore/jsearch");
 								$(searchForm).append(createHiddenField("journals", "", {id: searchId+"-primoQueryjournals"}));// add journals	
 							} else if (temp.toLowerCase().substr(0,6) === "course") {
-								console.log("DISCOVERY: Morphing ["+searchId+"] into a Course Reserve search box");
+								debug("Morphing ["+searchId+"] into a Course Reserve search box");
 								$(searchForm).find("input[name='search_scope']").attr("value", discoveryCustom.search_scope + "_course");
 								$(searchForm).find("input[name='tab']").attr("value","course_tab");
 							}
@@ -490,10 +561,10 @@
 								appendTo: $(myAutosuggest)
 							});
 
-							console.log("DISCOVERY: jQuery ui AVAILABLE, autosuggest ENABLED for: #" + $(this).attr("id"));
+							debug("jQuery ui AVAILABLE, autosuggest ENABLED for: #" + $(this).attr("id"));
 
 						} else {
-							console.log("DISCOVERY: jQuery ui NOT available, autosuggest NOT enabled for: #" + $(this).attr("id"));
+							debug("jQuery ui NOT available, autosuggest NOT enabled for: #" + $(this).attr("id"));
 						}	
 
 						/* 
@@ -517,9 +588,20 @@
 			/* *****************************************************************
 			 * EXECUTE: This is what we call when document is ready
 			 */
+			
+			var initStart = new Date(); 
+			
+			debug("Starting...");
 
 			$(".discovery-search-widget").discoverySearchWidget();
+			
 			cssCheck();
+			
+			// calculate the milliseconds it took
+			var diff = Math.abs((new Date()) - initStart); 
+
+			// put it in the console.log for devs
+			debug("Done. Completed in "+diff+" milliseconds");
 
 			/* 
 			 * END EXECUTE
@@ -548,7 +630,9 @@
 		 * work without jQuery UI
 		 */
 
-		console.log("DISCOVERY: jQuery and jQuery UI required to generate dynamic discovery search box. Generic search box generated instead.");
+		debug("jQuery and jQuery UI required to generate dynamic discovery search box. Generic search box generated instead.");
+		debug("Starting...");
+		var initStart = new Date(); 
 
 		var divs = document.getElementsByClassName("discovery-search-widget");
 
@@ -584,6 +668,12 @@
 		}
 
 		cssCheck();
+				
+		// calculate the milliseconds it took
+		var diff = Math.abs((new Date()) - initStart); 
+		
+		// put it in the console.log for devs
+		debug("Done. Completed in "+diff+" milliseconds");
 	}
 
 })();
@@ -601,13 +691,12 @@ function searchPrimo(myId) {
 function searchPrimoEnhanced(myId) {
 	"use strict";
 	
-	console.log("myId: "+myId);
-
-	// this here looks to see if we are doing a search on author or title (subject might also come here)
+	// this here looks to see if we are doing a search on author, title, journal, or course field
 	var field = "any";
 	var scope = document.getElementById(myId).getAttribute("data-scope");
 	if ( scope !== null ) {
 		
+		// set the field of query=[field],contains,[keywords]
 		switch (scope.toLowerCase()) {
 			case "author":
 				field = "creator";
@@ -619,6 +708,7 @@ function searchPrimoEnhanced(myId) {
 				
 			case "journal":
 				field = "any";
+				// journal search has an extra field: journals
 				var tval = document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " ");
 				document.getElementById(myId+"-primoQueryjournals").value = "any," + tval;
 				break;
@@ -638,6 +728,8 @@ function searchPrimoEnhanced(myId) {
 			case "course_dept":
 				field = "crsdept";
 				break;
+				
+			// default is already "any"
 		}
 	} 
 

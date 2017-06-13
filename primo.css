@@ -1,7 +1,7 @@
 /*
 	Discovery Loader Widget
 	University of St. Thomas Libraries
-	May 11, 2017
+	June 08, 2017
 	
 	Full Code (including non-minified) and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
@@ -134,7 +134,7 @@
 
 .discovery-search-widget label, span.ui-helper-hidden-accessible {
 	position:absolute;
-	left:-10000px;
+	left:-10022px;
 	top:auto;
 	width:1px;
 	height:1px;
@@ -148,6 +148,17 @@
 	margin-bottom: 0px;
 }
 
-.discovery-search-widget p.discovery-advanced {
-	margin-top: 0px;
+.discovery-search-widget ul.discovery-links {
+	font-family: truenoregular,Arial,sans-serif;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.discovery-search-widget ul.discovery-links li {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.discovery-search-widget ul.discovery-links li:not(:last-child):after {
+	content: " | ";
 }

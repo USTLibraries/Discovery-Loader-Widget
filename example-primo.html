@@ -1,15 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Discovery Loader Widget (Primo) Example Page</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Discovery Loader Widget (Primo) Example Page</title>
 
 
-<meta name="viewport" content="width=device-width">
+	<meta name="viewport" content="width=device-width">
 
-<!-- Bring in the JQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<!-- Bring in the JQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+	<!-- comment out when testing auto load -->
+	<link rel="stylesheet" type="text/css" href="primo.css">
 </head>
 
 <body>
@@ -66,7 +69,7 @@
    &lt;script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"&gt;&lt;/script&gt;</pre></li>
 	<li>It does fall back to plain JavaScript if no jQuery, but produces an unscoped basic search box.</li>
 </ul>
-<P>IMPORTANT!: There is currently NOT an autosuggest feature though the code is there for future use. Therefore you do NOT need jQuery UI.</P>
+<P>IMPORTANT!: There is currently NOT an autosuggest feature though the code is there for future use. Therefore you do NOT need jQuery UI. In order to use autosuggest you will need to have an autosuggest service as Primo does not provide one like Summon does. I'm working on a solution.</P>
 <h3>Files:</h3>
 <ul>
 	<li><a href="primo.js">primo.js</a></li>
@@ -375,6 +378,56 @@ one content type at a time.</p>
     data-tagline="Search course reserves by department"
     data-placeholder="Department name"
 ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+	
+	
+	<h2>Links under box</h2>
+	<p>Advanced Search and Account Links can be placed under the box.</p>
+	
+	<h3>Advanced Search</h3>
+	
+<!-- search box -->
+<div class="discovery-search-widget"
+        id="discoverySearch001-link01"
+        data-tagline="Type your search term(s):"
+        data-placeholder="default"
+        data-advanced="default"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end search box -->
+
+	<h3>Login</h3>
+	
+<!-- search box -->
+<div class="discovery-search-widget"
+        id="discoverySearch001-link02"
+        data-tagline="Type your search term(s):"
+        data-placeholder="default"
+        data-login="default"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end search box -->
+
+	<h3>Advanced and Login</h3>
+	
+<!-- search box -->
+<div class="discovery-search-widget"
+        id="discoverySearch001-link03"
+        data-tagline="Type your search term(s):"
+        data-placeholder="default"
+        data-advanced="default"
+        data-login="default"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end search box -->
+
+	<h3>Custom Link Text</h3>
+	
+<!-- search box -->
+<div class="discovery-search-widget"
+        id="discoverySearch001-link04"
+        data-tagline="Type your search term(s):"
+        data-placeholder="default"
+        data-advanced="Search like a pro"
+        data-login="Login"
+    ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+<!-- end search box -->
 	
 	</div>
 
