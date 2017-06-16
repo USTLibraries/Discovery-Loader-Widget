@@ -1,7 +1,7 @@
 /*
 	Discovery Loader Widget (Primo)
 	University of St. Thomas Libraries
-	June 08, 2017
+	June 15, 2017
 	
 	Full Code (including non-minified) and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
@@ -23,15 +23,19 @@
 	 * CUSTOM VARIABLES
 	 */
 	
-	var version = "0.0.26-20170612"; // Just something to check for in the Browser Console
+	var version = "0.0.27-20170615"; // Just something to check for in the Browser Console
 	                                 // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
 									 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
 								 	 // and should take a break
+
 
 	// Wondering what some of these values should be?
 	// Do a search in Primo and look at the query string in the URL of the results page
 	var discoveryCustom = { css: 'primo.css', // location of search box css file
 							url: 'https://yoursite.primo.exlibrisgroup.com', // base URL to your primo instance
+						    button_colors: '#FFFFFF,#000000', //leave blank if you updated the css (recommended) 
+						                                      // otherwise enter the background and text hex color separated by comma '#FFFFFF,#000000'
+							// primo values - many will be found in your query string or in Back Office
 							instituion: 'YOUR_INSTITUTION',
 							vid: 'YOURVIEW',
 							tab: 'default_tab',
@@ -44,9 +48,15 @@
 							facet_books: 'books', // can only include one material type, what type should BOOKS return?
 							facet_audio: 'audio', // can only include one material type, what type should AUDIO return?
 							facet_video: 'video', // can only include one material type, what type should VIDEO return?
-							facet_music: 'score' // can only include one material type, what type should MUSIC return?
-						};
-
+							facet_music: 'score', // can only include one material type, what type should MUSIC return?
+						    // default text for when data-something="default"
+						    default_tagline: 'Search the library catalog',
+						    default_placeholder: 'Find books, articles, movies, and more',
+						    default_placeholder_short: 'Keywords',
+						    default_advanced: 'More search options',
+						    default_login: 'My Account',
+						    default_button: 'Search'
+						  };
 	/* 
 	 * END CUSTOM VARIABLES
 	 * Yep, that's it. No other code changes are necessary in this .js file
@@ -202,7 +212,7 @@
 						if( isTrue(temp) ){
 
 							// default placeholder text (if placeholder text is true
-							var s = "Find books, articles, movies, and more"; 
+							var s = discoveryCustom.default_placeholder; 
 
 							if ( !isDefault(temp) ) { s = temp;	}
 
@@ -223,7 +233,7 @@
 						 */
 
 						var searchLabel = document.createElement("label");
-						$(searchLabel).attr("for", searchId+"-primoQueryTemp").html("Search");			
+						$(searchLabel).attr("for", searchId+"-primoQueryTemp").html(discoveryCustom.default_label);			
 
 
 						/* *****************************************************************
@@ -369,6 +379,20 @@
 							onclick: 'searchPrimoEnhanced(\''+searchId+'\')',
 							alt: 'Search'
 						});
+						
+						// set the custom color of the button if listed in custom rather than css
+						if (discoveryCustom.button_colors !== "") {
+							var c = discoveryCustom.button_colors.split(",");
+							if (c.length > 1 ) {
+								$(searchButton).css({
+									"background-color": c[0],
+									color: c[1]
+								});
+							}
+						}
+						
+						// https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
+						// add a small width class for magnifying glass color
 
 
 						/* *****************************************************************
@@ -381,7 +405,7 @@
 						if( isTrue(temp) ){
 
 							// default tagline text (if data-tagline is "default")
-							var s = "Search the library catalog"; 
+							var s = discoveryCustom.default_tagline; 
 
 							// Use default or do we have something in data-tagline attribute?
 							if ( !isDefault(temp) ) { s = temp;	}
@@ -403,7 +427,7 @@
 						if( isTrue(temp) ){
 
 							// default advanced search link text (if data-advanced is "default")
-							var s = "More search options";
+							var s = discoveryCustom.default_advanced;
 
 							// Use default or do we have something in data-advanced attribute?
 							if ( !isDefault(temp) ) { s = temp;	}
@@ -426,7 +450,7 @@
 						if( isTrue(temp) ){
 
 							// default advanced search link text (if data-advanced is "default")
-							var s = "My Account";
+							var s = discoveryCustom.default_login;
 
 							// Use default or do we have something in data-advanced attribute?
 							if ( !isDefault(temp) ) { s = temp;	}
@@ -589,18 +613,21 @@
 			 * EXECUTE: This is what we call when document is ready
 			 */
 			
+			// capture the execution start time
 			var initStart = new Date(); 
 			
 			debug("Starting...");
 
-			$(".discovery-search-widget").discoverySearchWidget();
+			// call the function that goes through the page and transforms all the div.discovery-search-widget tags
+			$("div.discovery-search-widget").discoverySearchWidget();
 			
+			// now that we've transformed the divs, load the style sheet if it isn't already
 			cssCheck();
 			
-			// calculate the milliseconds it took
+			// calculate the milliseconds it took to transform all <div> tags
 			var diff = Math.abs((new Date()) - initStart); 
 
-			// put it in the console.log for devs
+			// put it in the console.log for devs to check execution time
 			debug("Done. Completed in "+diff+" milliseconds");
 
 			/* 
@@ -632,11 +659,13 @@
 
 		debug("jQuery and jQuery UI required to generate dynamic discovery search box. Generic search box generated instead.");
 		debug("Starting...");
+		
+		// capture the execution start time
 		var initStart = new Date(); 
 
 		var divs = document.getElementsByClassName("discovery-search-widget");
 
-		// Go through all .discovery-search-widgets and replace the inner HTML of the div
+		// Go through all .discovery-search-widget tags and replace the inner HTML of the div
 		for( var i = 0, len = divs.length; i < len; i++ ) {
 			var sbID = divs[i].getAttribute("id") + "-js" + i; // number to make unique
 
@@ -646,8 +675,8 @@
 			var html = "<form class='discovery-search-box' action='" + discoveryCustom.url + "/primo-explore/search' " + nl
 					 + "      target='_blank' enctype='application/x-www-form-urlencoded; charset=utf-8' onsubmit=\"searchPrimo('"+sbID+"')\" " + nl
 					 + "      name='primoSearch' method='GET' id='"+sbID+"-searchform'>" + nl
-					 + "   <label for='"+sbID+"-primoQueryTemp'>Search</label>" + nl
-					 + "   <input placeholder='Search for articles, books, and more' class='discovery-search-field' " + nl
+					 + "   <label for='"+sbID+"-primoQueryTemp'>"+ discoveryCustom.default_label +"</label>" + nl
+					 + "   <input placeholder='"+ discoveryCustom.default_placeholder +"' class='discovery-search-field' " + nl
 					 + "      autocomplete='off' name='primoQueryTemp' id='"+sbID+"-primoQueryTemp' type='search'> " + nl
 					 + "   <input type='hidden' name='institution' value='"+ discoveryCustom.instituion +"'> " + nl
 					 + "   <input type='hidden' name='vid' value='"+ discoveryCustom.vid +"'> " + nl
@@ -661,7 +690,9 @@
 					 + "   <input type='hidden' name='query' id='"+sbID+"-primoQuery'> " + nl
 					 + "   <input type='hidden' name='displayField' value='all'> " + nl
 					 + "   <input type='hidden' name='pcAvailabiltyMode' value='true'> " + nl
-					 + "   <input id='go' title='Search' onclick=\"searchPrimo('"+sbID+"')\" alt='Search' class='discovery-search-button' value='Search' name='search' type='submit'> " + nl
+					 + "   <input id='go' title='"+ discoveryCustom.default_button +"' onclick=\"searchPrimo('"+sbID+"')\" " +nl
+			         + "          alt='"+ discoveryCustom.default_button +"' class='discovery-search-button' " + nl
+			         + "          value='"+ discoveryCustom.default_button +"' name='search' type='submit'> " + nl
 					 + "</form>" + nl;
 
 			divs[i].innerHTML = html;
@@ -669,7 +700,7 @@
 
 		cssCheck();
 				
-		// calculate the milliseconds it took
+		// calculate the milliseconds it took to transform all <div> tags
 		var diff = Math.abs((new Date()) - initStart); 
 		
 		// put it in the console.log for devs
