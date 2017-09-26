@@ -24,7 +24,9 @@ New! June 2017! Now Primo Journal Title Search boxes are supported!
 
 New! June 2017! Course Reserve searches are in beta (I don't have data to fully test against yet)
 
-Coming soon: css enhancements for small widths (like if the search box is placed in a narrow column).
+New! September 2017! CSS enhancements for small widths (like if the search box is placed in a narrow column) and ability to add a custom link.
+
+Coming Winter 2017: Multi select facets
 
 Just use primo.js and primo.css files
 
