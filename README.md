@@ -16,6 +16,8 @@ Use the summon.js and summon.css files
 
 Uses the same DIV tag structure as the Primo DIV. See example-summon.html for documentation.
 
+No plans on adding additional features to summon.js
+
 ## Primo Search
 
 New! May 2017! Now Primo Search boxes are supported!
