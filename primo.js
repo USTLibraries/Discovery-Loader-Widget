@@ -1,18 +1,19 @@
+/*jshint multistr: true */
 /*
 	Discovery Loader Widget (Primo)
 	University of St. Thomas Libraries
-	June 15, 2017
-	
+	June 16, 2017
+
 	Full Code (including non-minified) and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
-	
+
 	https://jscompress.com/ was used to create minified js version
 	https://cssminifier.com/ was used to create the minified css version
-	
+
 	Primo Search Box Documentation:
 	https://knowledge.exlibrisgroup.com/Primo/Product_Documentation/New_Primo_User_Interface/New_UI_Customization_-_Best_Practices#Creating_a_Search_Box_With_Deep_Links_to_the_New_UI
 
-	
+
 */
 
 (function () {
@@ -22,18 +23,17 @@
 	/* *****************************************************************
 	 * CUSTOM VARIABLES
 	 */
-	
-	var version = "0.0.27-20170615"; // Just something to check for in the Browser Console
-	                                 // Does nothing else except keep you from pulling your hair out when you wonder if the code changes 
+
+	var version = "0.0.31-20170926"; // Just something to check for in the Browser Console
+	                                 // Does nothing else except keep you from pulling your hair out when you wonder if the code changes
 									 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
 								 	 // and should take a break
-
 
 	// Wondering what some of these values should be?
 	// Do a search in Primo and look at the query string in the URL of the results page
 	var discoveryCustom = { css: 'primo.css', // location of search box css file
 							url: 'https://yoursite.primo.exlibrisgroup.com', // base URL to your primo instance
-						    button_colors: '#FFFFFF,#000000', //leave blank if you updated the css (recommended) 
+						    button_colors: '#FFFFFF,#000000', //leave blank if you updated the css (recommended)
 						                                      // otherwise enter the background and text hex color separated by comma '#FFFFFF,#000000'
 							// primo values - many will be found in your query string or in Back Office
 							instituion: 'YOUR_INSTITUTION',
@@ -55,9 +55,17 @@
 						    default_placeholder_short: 'Keywords',
 						    default_advanced: 'More search options',
 						    default_login: 'My Account',
-						    default_button: 'Search'
+						    default_button: 'Search',
+							// custom link to place under search box
+						    custom_link_url: '',
+						    custom_link_text: ''
+							// define narrow width - at what point does search box move from being a wide format to a narrow format when in tight places/columns?
+						    // it resizes automatically if the browser window is resized (responsive)
+						    // wide format: search icon in left side of text search field, Search text in button
+						    // narrow format: no search icon in left side, but button becomes square with icon, no text. Perfect in small spaces/columns or screens
+						    narrow_max: 380 // Always want a mag icon for search button? set this extremly high! 9999
 						  };
-	/* 
+	/*
 	 * END CUSTOM VARIABLES
 	 * Yep, that's it. No other code changes are necessary in this .js file
 	 ***************************************************************** */
@@ -66,12 +74,12 @@
 	var handle  = "DISCOVERY";
 	var name    = "Discovery Loader Widget (Primo)";
 	var silent  = false;
-	
+
 		/* =====================================================================
 		debug()
 
-		If not silenced, outputs text pased to it to console.log 
-		
+		If not silenced, outputs text pased to it to console.log
+
 		Need a line number? In your code use debug(yourmessage + " - Line:"+ (new Error()).lineNumber );
 
 		This function has a companion variable: silent
@@ -85,7 +93,7 @@
 			console.log(handle+" ["+ts+"] : " + text);
 		}
 	};
-	
+
 	var cssCheck = function() {
 
 		// load in the css, but check first to make sure it isn't already loaded
@@ -94,7 +102,7 @@
 		var elem = document.getElementsByClassName("discovery-search-widget");
 
 		if (elem.length > 0) {
-			
+
 			var myTempStyle = elem[0].getElementsByTagName("label")[0];
 			var theCSSprop = window.getComputedStyle(myTempStyle,null).getPropertyValue("left");
 
@@ -111,16 +119,22 @@
 		}
 
 	};
-	
-	debug("Loaded "+name+" ("+code+") [ver"+version+"]"); 
+
+	debug("Loaded "+name+" ("+code+") [ver"+version+"]");
 
 
 	// check for jQuery, if not exist, just place a plain javascripted search box (no scoping)
 	// this entire script could be re-written so as to not use jQuery, but it serves my purpose
 	if (  typeof($) !== "undefined" ) {
 		$(document).ready( function(){
-			
+
 			(function( $ ) {
+
+				/* ========================================================================
+				 * ************************************************************************
+				 *  $.fn.discoverySearchWidget
+				 * ************************************************************************
+				 */
 
 				$.fn.discoverySearchWidget = function() {
 
@@ -162,7 +176,7 @@
 							// select a new id
 							var newId = "";
 							do {
-								newId = searchId + "_" + Math.floor((Math.random() * 1000) + 1); 
+								newId = searchId + "_" + Math.floor((Math.random() * 1000) + 1);
 							} while (!isUniqueID( newId ) );
 
 							// assign the new id
@@ -173,7 +187,7 @@
 
 						}
 
-						var temp = "";	// a holder when we evaluate data- attribute defaults		
+						var temp = "";	// a holder when we evaluate data- attribute defaults
 
 
 						/* *****************************************************************
@@ -212,7 +226,7 @@
 						if( isTrue(temp) ){
 
 							// default placeholder text (if placeholder text is true
-							var s = discoveryCustom.default_placeholder; 
+							var s = discoveryCustom.default_placeholder;
 
 							if ( !isDefault(temp) ) { s = temp;	}
 
@@ -233,7 +247,7 @@
 						 */
 
 						var searchLabel = document.createElement("label");
-						$(searchLabel).attr("for", searchId+"-primoQueryTemp").html(discoveryCustom.default_label);			
+						$(searchLabel).attr("for", searchId+"-primoQueryTemp").html(discoveryCustom.default_label);
 
 
 						/* *****************************************************************
@@ -366,7 +380,7 @@
 
 						/* *****************************************************************
 						 * Generate the search button
-						 */	
+						 */
 
 						var searchButton = document.createElement("input");
 						$(searchButton).attr({
@@ -379,7 +393,7 @@
 							onclick: 'searchPrimoEnhanced(\''+searchId+'\')',
 							alt: 'Search'
 						});
-						
+
 						// set the custom color of the button if listed in custom rather than css
 						if (discoveryCustom.button_colors !== "") {
 							var c = discoveryCustom.button_colors.split(",");
@@ -390,7 +404,7 @@
 								});
 							}
 						}
-						
+
 						// https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
 						// add a small width class for magnifying glass color
 
@@ -405,7 +419,7 @@
 						if( isTrue(temp) ){
 
 							// default tagline text (if data-tagline is "default")
-							var s = discoveryCustom.default_tagline; 
+							var s = discoveryCustom.default_tagline;
 
 							// Use default or do we have something in data-tagline attribute?
 							if ( !isDefault(temp) ) { s = temp;	}
@@ -444,7 +458,7 @@
 						/* *****************************************************************
 						 * Create the account login link
 						 */
-						
+
 						var myAccountLink = null;
 						temp = $(this).attr("data-login"); // grab the data attribute
 						if( isTrue(temp) ){
@@ -465,18 +479,47 @@
 						}
 
 						/* *****************************************************************
+						 * Create the custom link
+						 */
+
+						var myCustomLink = null;
+						temp = $(this).attr("data-custom-link"); // grab the data attribute
+						if( isTrue(temp) ){
+
+							// default custom-link search link text (if data-custom-link is "default")
+							var s = discoveryCustom.custom_link_text;
+
+							// Use default or do we have something in data-custom-link attribute?
+							if ( !isDefault(temp) ) { s = temp;	}
+
+							// default custom-link-url, do we use default or do we have something else?
+							var u = discoveryCustom.custom_link_url;
+							temp = $(this).attr("data-custom-link-url");
+							if( isTrue(temp) ) { u = temp; }
+
+							// Create the custom link HTML tag
+							myCustomLink = document.createElement("li");
+
+							var a = document.createElement("a");
+							$(a).attr("href",u);
+							$(a).html(s);
+							$(a).appendTo(myCustomLink);
+						}
+
+						/* *****************************************************************
 						 * Create the discovery links for Advanced Search and My Account
 						 * These show up under the search box
 						 */
-						
+
 						var discoveryLinks = null;
-						if ( myAccountLink !== null || searchAdvanced !== null) {
-							
+						if ( myAccountLink !== null || searchAdvanced !== null || myCustomLink !== null) {
+
 							discoveryLinks = document.createElement("ul");
 							$(discoveryLinks).addClass("discovery-links");
-							
+
 							if( searchAdvanced !== null ) { $(searchAdvanced).appendTo(discoveryLinks); } // add Advanced link
-							if( myAccountLink !== null ) { $(myAccountLink).appendTo(discoveryLinks); } // add Account link							
+							if( myAccountLink !== null ) { $(myAccountLink).appendTo(discoveryLinks); } // add Account link
+							if( myCustomLink !== null ) { $(myCustomLink).appendTo(discoveryLinks); } // add Custom link
 
 						}
 
@@ -488,7 +531,7 @@
 						   however CSS styling may conflict if there are several autocompletes on the page such as
 						   university searches, database finders, etc. So we create our own little "namespace"
 						   and direct our CSS to only style within that name space so we are not affecting other
-						   autocomplete UIs. Our discovery CSS won't override other autocomplete UIs but will still 
+						   autocomplete UIs. Our discovery CSS won't override other autocomplete UIs but will still
 						   inherit CSS from those unless their CSS is also scoped in their CSS
 
 						   For Example the default UI would be like:
@@ -524,7 +567,7 @@
 						if( searchTagline !== null ) { $(this).prepend(searchTagline); } // before form
 						if( discoveryLinks !== null ) { $(this).append(discoveryLinks); } // after form
 						if( myAutosuggest !== null ) { $(this).append(myAutosuggest); } // after form
-						
+
 						temp = $(this).attr("data-scope");
 						if ( isTrue(temp) ) {
 							if (temp.toLowerCase() === "journal") {
@@ -535,26 +578,24 @@
 								// TODO, MAYBE: there's a few more to detach
 								$(searchForm).find("input[name='tab']").attr("value","jsearch_slot"); // switch tab over to journal
 								$(searchForm).attr("action", discoveryCustom.url + "/primo-explore/jsearch");
-								$(searchForm).append(createHiddenField("journals", "", {id: searchId+"-primoQueryjournals"}));// add journals	
+								$(searchForm).append(createHiddenField("journals", "", {id: searchId+"-primoQueryjournals"}));// add journals
 							} else if (temp.toLowerCase().substr(0,6) === "course") {
 								debug("Morphing ["+searchId+"] into a Course Reserve search box");
 								$(searchForm).find("input[name='search_scope']").attr("value", discoveryCustom.search_scope + "_course");
 								$(searchForm).find("input[name='tab']").attr("value","course_tab");
 							}
-						}				
-
-
+						}
 
 						/* *****************************************************************
 						 * Add autosuggest if jQuery UI available
 						 */
 
-						/* 2016-09-22 
+						/* 2016-09-22
 						   We put this last because LibGuides uses a version of jQuery UI that
 						   throws a "TypeError: this.menu is undefined" error if we point
 						   the "appendTo" to something that doesn't yet exist on the page. So
-						   we add all the elements first, and then go back and attach the 
-						   autosuggest (if jQuery UI is detected)					   
+						   we add all the elements first, and then go back and attach the
+						   autosuggest (if jQuery UI is detected)
 						 */
 
 						// See if autocomplete is available and attach the function
@@ -589,53 +630,106 @@
 
 						} else {
 							debug("jQuery ui NOT available, autosuggest NOT enabled for: #" + $(this).attr("id"));
-						}	
+						}
 
-						/* 
+						/*
 						 * AND WE'RE DONE!
 						 ***************************************************************** */
 					});
-					/* 
+					/*
 					 * END this.each
-					 ***************************************************************** */	
+					 ***************************************************************** */
 
 				};
-				/* 
-				 * END $.fn.discoverySearchWidget 
-				 ***************************************************************** */	
+				/*
+				 * END $.fn.discoverySearchWidget
+				 ***************************************************************** */
+
+
+				/* ========================================================================
+				 * ************************************************************************
+				 *  $.fn.discoverySearchCheckWidth
+				 * ************************************************************************
+				 *
+				 * This calculates the width of the search box
+				 * If the width is too narrow we want to remove the search icon
+				 * from the search field and make the search button smaller so
+				 * there is more room inside the search box
+				 *
+				 */
+
+				$.fn.discoverySearchCheckWidth = function() {
+
+					return this.each( function() {
+
+						var minWidthPx = discoveryCustom.narrow_max; // what is the minimum width before switching to narrow styles?
+
+						var cWidth = $(this).outerWidth(true); // get the outer width of the search box
+
+						var wOkay = true;
+						if (cWidth < minWidthPx) { wOkay = false; } // check the width
+
+						// for testing, place the width in a data attribute
+						$(this).attr("data-calc-width", "Needed: " + minWidthPx + " | Current: " + cWidth + " | Enough Room?: " + wOkay);
+
+						if ( wOkay ) { // wide
+							$(this).removeClass("discovery-narrow-width").addClass("discovery-wide-width");
+						} else { // narrow
+							$(this).removeClass("discovery-wide-width").addClass("discovery-narrow-width");
+						}
+
+
+					});
+					/*
+					 * END this.each
+					 ***************************************************************** */
+
+				};
+				/*
+				 * END $.fn.discoverySearchCheckWidth
+				 ***************************************************************** */
+
 
 			}( jQuery ));
-			/* 
+			/*
 			 * END function( $ )
-			 ***************************************************************** */			
+			 ***************************************************************** */
 
 			/* *****************************************************************
 			 * EXECUTE: This is what we call when document is ready
 			 */
-			
+
 			// capture the execution start time
-			var initStart = new Date(); 
-			
+			var initStart = new Date();
+
 			debug("Starting...");
 
 			// call the function that goes through the page and transforms all the div.discovery-search-widget tags
 			$("div.discovery-search-widget").discoverySearchWidget();
-			
+
 			// now that we've transformed the divs, load the style sheet if it isn't already
 			cssCheck();
-			
+
+			// call the function that goes through the pages and calculates the width of each search box to see if they are narrow
+			$("div.discovery-search-widget").discoverySearchCheckWidth();
+
+			// and check width every time window is resized
+			$( window ).resize(function() {
+				$("div.discovery-search-widget").discoverySearchCheckWidth();
+			});
+
 			// calculate the milliseconds it took to transform all <div> tags
-			var diff = Math.abs((new Date()) - initStart); 
+			var diff = Math.abs((new Date()) - initStart);
 
 			// put it in the console.log for devs to check execution time
 			debug("Done. Completed in "+diff+" milliseconds");
 
-			/* 
+			/*
 			 * END EXECUTE
 			 ***************************************************************** */
 		});
-		/* 
-		 * END document ready 
+		/*
+		 * END document ready
 		 ***************************************************************** */
 	} else {
 
@@ -646,11 +740,11 @@
 
 		/* *****************************************************************
 		 * If we don't detect jQuery on the page, create a generic search box using plain
-		 * JavaScript. It will just be a form with a search box and button. No scoping 
+		 * JavaScript. It will just be a form with a search box and button. No scoping
 		 * will be used.
 		 *
 		 * It could be rewritten so that the data-attributes are brought in without the need
-		 * of jQuery, but so few examples exist on the University of St. Thomas Libraries sites 
+		 * of jQuery, but so few examples exist on the University of St. Thomas Libraries sites
 		 * that this isn't worth development effort at this time. We only include it as an option
 		 * just in case. If the effort for creating a pure JavaScript implementation is necessary,
 		 * then it should really be brought into the script above. Of course, autocomplete wouldn't
@@ -659,9 +753,9 @@
 
 		debug("jQuery and jQuery UI required to generate dynamic discovery search box. Generic search box generated instead.");
 		debug("Starting...");
-		
+
 		// capture the execution start time
-		var initStart = new Date(); 
+		var initStart = new Date();
 
 		var divs = document.getElementsByClassName("discovery-search-widget");
 
@@ -669,40 +763,40 @@
 		for( var i = 0, len = divs.length; i < len; i++ ) {
 			var sbID = divs[i].getAttribute("id") + "-js" + i; // number to make unique
 
-			var nl = "\n";
-
 			// This is the plain HTML that will be placed in the document
-			var html = "<form class='discovery-search-box' action='" + discoveryCustom.url + "/primo-explore/search' " + nl
-					 + "      target='_blank' enctype='application/x-www-form-urlencoded; charset=utf-8' onsubmit=\"searchPrimo('"+sbID+"')\" " + nl
-					 + "      name='primoSearch' method='GET' id='"+sbID+"-searchform'>" + nl
-					 + "   <label for='"+sbID+"-primoQueryTemp'>"+ discoveryCustom.default_label +"</label>" + nl
-					 + "   <input placeholder='"+ discoveryCustom.default_placeholder +"' class='discovery-search-field' " + nl
-					 + "      autocomplete='off' name='primoQueryTemp' id='"+sbID+"-primoQueryTemp' type='search'> " + nl
-					 + "   <input type='hidden' name='institution' value='"+ discoveryCustom.instituion +"'> " + nl
-					 + "   <input type='hidden' name='vid' value='"+ discoveryCustom.vid +"'> " + nl
-					 + "   <input type='hidden' name='tab' value='"+ discoveryCustom.tab +"'> " + nl
-					 + "   <input type='hidden' name='search_scope' value='"+ discoveryCustom.search_scope +"'> " + nl
-					 + "   <input type='hidden' name='mode' value='Basic'> " + nl
-					 + "   <input type='hidden' name='displayMode' value='full'> " + nl
-					 + "   <input type='hidden' name='bulkSize' value='"+ discoveryCustom.bulkSize +"'> " + nl
-					 + "   <input type='hidden' name='highlight' value='true'> " + nl
-					 + "   <input type='hidden' name='dum' value='true'> " + nl
-					 + "   <input type='hidden' name='query' id='"+sbID+"-primoQuery'> " + nl
-					 + "   <input type='hidden' name='displayField' value='all'> " + nl
-					 + "   <input type='hidden' name='pcAvailabiltyMode' value='true'> " + nl
-					 + "   <input id='go' title='"+ discoveryCustom.default_button +"' onclick=\"searchPrimo('"+sbID+"')\" " +nl
-			         + "          alt='"+ discoveryCustom.default_button +"' class='discovery-search-button' " + nl
-			         + "          value='"+ discoveryCustom.default_button +"' name='search' type='submit'> " + nl
-					 + "</form>" + nl;
+			var html = " \
+<form class='discovery-search-box' action='" + discoveryCustom.url + "/primo-explore/search' \n \
+      target='_blank' enctype='application/x-www-form-urlencoded; charset=utf-8' onsubmit=\"searchPrimo('"+sbID+"')\" \
+      name='primoSearch' method='GET' id='"+sbID+"-searchform'> \
+    <label for='"+sbID+"-primoQueryTemp'>"+ discoveryCustom.default_label +"</label> \
+    <input placeholder='"+ discoveryCustom.default_placeholder +"' class='discovery-search-field' \
+       autocomplete='off' name='primoQueryTemp' id='"+sbID+"-primoQueryTemp' type='search'> \
+    <input type='hidden' name='institution' value='"+ discoveryCustom.instituion +"'> \
+    <input type='hidden' name='vid' value='"+ discoveryCustom.vid +"'> \
+    <input type='hidden' name='tab' value='"+ discoveryCustom.tab +"'> \
+    <input type='hidden' name='search_scope' value='"+ discoveryCustom.search_scope +"'> \
+    <input type='hidden' name='mode' value='Basic'> \
+    <input type='hidden' name='displayMode' value='full'> \
+    <input type='hidden' name='bulkSize' value='"+ discoveryCustom.bulkSize +"'> \
+    <input type='hidden' name='highlight' value='true'> \
+    <input type='hidden' name='dum' value='true'> \
+    <input type='hidden' name='query' id='"+sbID+"-primoQuery'> \
+    <input type='hidden' name='displayField' value='all'> \
+    <input type='hidden' name='pcAvailabiltyMode' value='true'> \
+    <input id='go' title='"+ discoveryCustom.default_button +"' onclick=\"searchPrimo('"+sbID+"')\" \
+           alt='"+ discoveryCustom.default_button +"' class='discovery-search-button' \
+           value='"+ discoveryCustom.default_button +"' name='search' type='submit'> \
+</form> \
+		";
 
 			divs[i].innerHTML = html;
 		}
 
 		cssCheck();
-				
+
 		// calculate the milliseconds it took to transform all <div> tags
-		var diff = Math.abs((new Date()) - initStart); 
-		
+		var diff = Math.abs((new Date()) - initStart);
+
 		// put it in the console.log for devs
 		debug("Done. Completed in "+diff+" milliseconds");
 	}
@@ -721,50 +815,50 @@ function searchPrimo(myId) {
 // from primo documentation, modified to allow multiple search boxes (used by code below if jQuery available)
 function searchPrimoEnhanced(myId) {
 	"use strict";
-	
+
 	// this here looks to see if we are doing a search on author, title, journal, or course field
 	var field = "any";
 	var scope = document.getElementById(myId).getAttribute("data-scope");
 	if ( scope !== null ) {
-		
+
 		// set the field of query=[field],contains,[keywords]
 		switch (scope.toLowerCase()) {
 			case "author":
 				field = "creator";
 				break;
-		
+
 			case "title":
 				field = "title";
 				break;
-				
+
 			case "journal":
 				field = "any";
 				// journal search has an extra field: journals
 				var tval = document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " ");
 				document.getElementById(myId+"-primoQueryjournals").value = "any," + tval;
 				break;
-				
+
 			case "course_name":
 				field = "crsname";
 				break;
-				
+
 			case "course_instr":
 				field = "crsinstrc";
 				break;
-				
+
 			case "course_id":
 				field = "crsid";
 				break;
-				
+
 			case "course_dept":
 				field = "crsdept";
 				break;
-				
+
 			// default is already "any"
 		}
-	} 
+	}
 
 	document.getElementById(myId+"-primoQuery").value = field+",contains," + document.getElementById(myId+"-primoQueryTemp").value.replace(/[,]/g, " ");
-	
+
 	document.forms[myId+"-searchForm"].submit();
 }
