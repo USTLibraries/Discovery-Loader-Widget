@@ -28,7 +28,7 @@ New! June 2017! Course Reserve searches are in beta (I don't have data to fully 
 
 New! September 2017! CSS enhancements for small widths (like if the search box is placed in a narrow column) and ability to add a custom link.
 
-Coming Winter 2017: Multi select facets
+New! August 2019: Multi select material type facets!
 
 Just use primo.js and primo.css files
 
