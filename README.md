@@ -18,7 +18,7 @@ Use the summon.js and summon.css files
 
 Uses the same DIV tag structure as the Primo DIV. See example-summon.html for documentation.
 
-Set the discovery_widget_loader_custom_settings js and css variable to use summon.js and summon.css
+Set the discovery_widget_loader_custom_settings variable to use summon.js and summon.css
 
 No plans on adding additional features to summon.js
 
