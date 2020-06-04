@@ -1,7 +1,7 @@
 /*
-	Discovery Loader Widget (Primo)
+	Discovery Loader Widget (Primo New UI or Primo VE)
 	University of St. Thomas Libraries
-	August 20, 2019
+	0.1.0-20200406
 
 	Full Code and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
@@ -11,53 +11,6 @@
 
 
 */
-
-/*
-****************************************************************************
-* Custom settings for Discovery-Loader-Widget
-*
-* discoveryCustomSettings will be passed to the Discovery-Loader-Widget function in primo[.min].js
-*/
-
-// Wondering what some of these values should be?
-// Do a search in Primo and look at the query string in the URL of the results page
-var discoveryCustomSettings = {
-    css: 'https://s3.us-east-2.amazonaws.com/stthomas-libraries-assets-prod/assets/js/discovery/primo.min.css', // location of search box css file
-    url: 'https://clicsearch.stthomas.edu', // base URL to your primo instance
-    button_colors: '#510c76,#FFFFFF', // background and text hex color separated by comma '#FFFFFF,#000000'
-    // primo values - many will be found in your query string or in Back Office
-    instituion: '01CLIC_STTHOMAS',
-    vid: 'STTHOMAS',
-    tab: 'default_tab',
-    search_scope: 'stthomas',
-    bulkSize: '10',
-    // look at this in the query string: facet=local1,include,My University Library
-    localParam: 'local2', // for a localized search, what is the param? local1, local2?
-    localDesc: 'University of St. Thomas', // the descriptor used for local resources
-    // customized mapping
-    facet_books: 'books', // can only include one material type, what type should BOOKS return?
-    facet_audio: 'audio', // can only include one material type, what type should AUDIO return?
-    facet_video: 'video', // can only include one material type, what type should VIDEO return?
-    facet_music: 'score', // can only include one material type, what type should MUSIC return?
-    facet_media: 'media', // can only include one material type, what type should AUVIS return?
-    // default text for when data-something="default"
-    default_tagline: 'Search the library catalog',
-    default_placeholder: 'Find books, articles, movies, and more',
-    default_placeholder_short: 'Keywords',
-    default_advanced: 'More search options',
-    default_login: 'My Account',
-    default_button: 'Search', // Text for search button (there is no data- attr for this)
-    default_label: 'Search', // Accessible label for screen readers (there is no data- attr for this)
-    // custom link to place under search box
-    custom_link_url: 'https://www.stthomas.edu/libraries/ask/clicsearch',
-    custom_link_text: 'Feedback',
-    // define narrow width - at what point does search box move from being a wide format to a narrow format when in tight places/columns?
-    // goes by space allowed for search box, not screen width. Perfect for narrow columns
-    // it resizes automatically if the browser window is resized (responsive)
-    // wide format: search icon in left side of text search field, Search text in button
-    // narrow format: no search icon in left side, but button becomes square with icon, no text. Perfect in small spaces/columns or screens
-    narrow_max: 380 // Always want a mag icon for search button? set this extremly high! 9999
-};
 
 
 /*
@@ -75,22 +28,24 @@ var discoveryCustomSettings = {
 	* HOUSEKEEPING
 	*/
 
-	var version = "0.0.50-20190820"; // Just something to check for in the Browser Console
+	var version = "0.1.2-20200603"; // Just something to check for in the Browser Console
 	                                 // Does nothing else except keep you from pulling your hair out when you wonder if the code changes
 									 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
 								 	 // and should take a break
 
-    // Copy this out, change the variable name of the copy from customTemplate to discoveryCustomSettings
+    // Copy this out, change the variable name of the copy from customTemplate to 
+    // the discovery_widget_loader_custom_settings variable in discovery-loader.js
     // customTemplate itself is never used except to check to make sure it was overriden.
     // Wondering what some of these values should be?
     // Do a search in Primo and look at the query string in the URL of the results page
     var customTemplate = {
-        css: 'https://example.com/assets/js/discovery/primo.min.css', // location of search box css file
+        primo_ve: false,
+        css: 'https://example.com/assets/js/discovery/primo.css', // location of search box css file
         url: 'https://myprimo.myinstitution.example.edu', // base URL to your primo instance
         button_colors: '#510c76,#FFFFFF', // background and text hex color separated by comma '#FFFFFF,#000000'
         // primo values - many will be found in your query string or in Back Office
-        instituion: 'YOUR_INSTITUTION',
-        vid: 'YOURVIEW',
+        instituion: 'YOUR_INSTITUTION',  // Even for VE, put this in
+        vid: 'YOURVIEW', // from vid parameter in your search query url For VE it will be like INST:VIEW
         tab: 'default_tab',
         search_scope: 'yourscope',
         bulkSize: '10',
@@ -99,11 +54,11 @@ var discoveryCustomSettings = {
         localDesc: 'Example University', // the descriptor used for local resources
         // customized mapping
         facet_books: 'books', // can only include one material type, what type should BOOKS return?
-        facet_audio: 'audio', // can only include one material type, what type should AUDIO return?
-        facet_video: 'video', // can only include one material type, what type should VIDEO return?
-        facet_music: 'score', // can only include one material type, what type should MUSIC return?
+        facet_audio: 'audios', // can only include one material type, what type should AUDIO return?
+        facet_video: 'videos', // can only include one material type, what type should VIDEO return?
+        facet_music: 'scores', // can only include one material type, what type should MUSIC return?
         facet_media: 'media', // can only include one material type, what type should AUVIS return?
-        // default text for when data-something="default"
+		default_target: '_parent',
         default_tagline: 'Search the library catalog',
         default_placeholder: 'Find books, articles, movies, and more',
         default_placeholder_short: 'Keywords',
@@ -123,10 +78,11 @@ var discoveryCustomSettings = {
     };
 
     const discoveryCustom = customSettings;
+    const discoPath = (discoveryCustom.primo_ve) ? "discovery" : "primo-explore";
 
 	var code    = "github.com/USTLibraries/Discovery-Loader-Widget";
 	var handle  = "DISCOVERY";
-	var name    = "Discovery Loader Widget (Primo)";
+	var name    = "Discovery Loader Widget (Primo New UI or Primo VE)";
 	var silent  = false;
 
 		/* =====================================================================
@@ -174,7 +130,9 @@ var discoveryCustomSettings = {
 
 	};
 
-	debug("Loaded "+name+" ("+code+") [ver"+version+"]");
+    debug("Loaded "+name+" ("+code+") [ver"+version+"]");
+    debug("Primo VE: "+ customSettings.primo_ve);
+    debug("Path: " + discoPath);
 
     // Check to make sure the custom settings are defined.
     if (discoveryCustom !== null && discoveryCustom.instituion !== customTemplate.instituion) {
@@ -250,14 +208,21 @@ var discoveryCustomSettings = {
                              * Create the form element
                              */
 
+                            let resultTarget = discoveryCustom.default_target;
+                            temp = $(this).attr("data-target");
+                            debug("Target: "+temp);
+                            if (isTrue(temp) && !isDefault(temp)) {
+                                resultTarget = temp;
+                                debug("Target set: "+resultTarget);
+                            }
 
                             var searchForm = document.createElement("form");
                             $(searchForm).attr({
                                 id: searchId + '-searchForm',
                                 method: 'GET',
                                 name: 'primoSearch',
-                                target: '_blank',
-                                action: discoveryCustom.url + '/primo-explore/search',
+                                target: resultTarget,
+                                action: discoveryCustom.url + '/' + discoPath + '/search',
                                 class: 'discovery-search-box',
                                 enctype: 'application/x-www-form-urlencoded; charset=utf-8',
                                 onsubmit: 'searchPrimoEnhanced(\'' + searchId + '\')'
@@ -436,7 +401,7 @@ var discoveryCustomSettings = {
                             //&facet=tlevel,include,online_resources
                             temp = $(this).attr("data-scope-fulltext");
                             if (isTrue(temp)) {
-                                hiddenFields.push(createHiddenField("mfacet", "tlevel,include,online_resources"));
+                                hiddenFields.push(createHiddenField("mfacet", "tlevel,include,online_resources,1"));
                             }
 
 
@@ -528,7 +493,7 @@ var discoveryCustomSettings = {
                                 searchAdvanced = document.createElement("li");
 
                                 var a = document.createElement("a");
-                                $(a).attr("href", discoveryCustom.url + "/primo-explore/search?mode=advanced&vid=" + discoveryCustom.vid);
+                                $(a).attr("href", discoveryCustom.url + "/"+discoPath+"/search?mode=advanced&vid=" + discoveryCustom.vid);
                                 $(a).html(s);
                                 $(a).appendTo(searchAdvanced);
                             }
@@ -551,7 +516,7 @@ var discoveryCustomSettings = {
                                 myAccountLink = document.createElement("li");
 
                                 var a = document.createElement("a");
-                                $(a).attr("href", discoveryCustom.url + "/primo-explore/account?section=overview&vid=" + discoveryCustom.vid);
+                                $(a).attr("href", discoveryCustom.url + "/"+discoPath+"/account?section=overview&vid=" + discoveryCustom.vid);
                                 $(a).html(s);
                                 $(a).appendTo(myAccountLink);
                             }
@@ -655,7 +620,7 @@ var discoveryCustomSettings = {
                                     $(searchForm).find("input[name='mode']").detach();// remove the mode
                                     // TODO, MAYBE: there's a few more to detach
                                     $(searchForm).find("input[name='tab']").attr("value", "jsearch_slot"); // switch tab over to journal
-                                    $(searchForm).attr("action", discoveryCustom.url + "/primo-explore/jsearch");
+                                    $(searchForm).attr("action", discoveryCustom.url + "/"+discoPath+"/jsearch");
                                     $(searchForm).append(createHiddenField("journals", "", { id: searchId + "-primoQueryjournals" }));// add journals
                                 } else if (temp.toLowerCase().substr(0, 6) === "course") {
                                     debug("Morphing [" + searchId + "] into a Course Reserve search box");
@@ -843,7 +808,7 @@ var discoveryCustomSettings = {
 
                 // This is the plain HTML that will be placed in the document
                 var html = " \
-<form class='discovery-search-box' action='" + discoveryCustom.url + "/primo-explore/search' \n \
+<form class='discovery-search-box' action='" + discoveryCustom.url + "/" + discoPath + "/search' \n \
       target='_blank' enctype='application/x-www-form-urlencoded; charset=utf-8' onsubmit=\"searchPrimo('"+ sbID + "')\" \
       name='primoSearch' method='GET' id='"+ sbID + "-searchform'> \
     <label for='"+ sbID + "-primoQueryTemp'>" + discoveryCustom.default_label + "</label> \
@@ -882,10 +847,10 @@ var discoveryCustomSettings = {
         }
 
     } else {
-        debug("discoveryCustomSettings not properly set");
+        debug("discovery_widget_loader_custom_settings not properly set in discovery-loader.js");
     }
 
-})(discoveryCustomSettings);
+})(discovery_widget_loader_custom_settings);
 
 
 // from primo documentation, used by javascript only version
