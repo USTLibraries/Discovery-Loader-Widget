@@ -1,7 +1,7 @@
 /*
 	Discovery Loader Widget (Primo New UI or Primo VE)
 	University of St. Thomas Libraries
-	0.1.0-20200406
+	0.1.1-20200807
 
 	Full Code and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
@@ -225,7 +225,7 @@
                                 action: discoveryCustom.url + '/' + discoPath + '/search',
                                 class: 'discovery-search-box',
                                 enctype: 'application/x-www-form-urlencoded; charset=utf-8',
-                                onsubmit: 'searchPrimoEnhanced(\'' + searchId + '\')'
+                                onsubmit: 'searchPrimoEnhanced(\'' + searchId + '\', \''+discoveryCustom.primo_ve+'\')'
                             });
 
 
@@ -258,7 +258,7 @@
                             $(searchField).keydown(function (event) {
                                 if (event.keyCode === 13) {
                                     $(this).trigger("keyup"); // make sure it gets sent!**
-                                    searchPrimoEnhanced(searchId); // this.form.submit();
+                                    searchPrimoEnhanced(searchId, discoveryCustom.primo_ve); // this.form.submit();
                                     return false;
                                 }
                             });
@@ -433,7 +433,7 @@
                                 class: 'discovery-search-button',
                                 id: 'go',
                                 title: 'Search',
-                                onclick: 'searchPrimoEnhanced(\'' + searchId + '\')',
+                                onclick: 'searchPrimoEnhanced(\'' + searchId + '\', \''+discoveryCustom.primo_ve+'\')',
                                 alt: 'Search'
                             });
 
@@ -624,8 +624,10 @@
                                     $(searchForm).append(createHiddenField("journals", "", { id: searchId + "-primoQueryjournals" }));// add journals
                                 } else if (temp.toLowerCase().substr(0, 6) === "course") {
                                     debug("Morphing [" + searchId + "] into a Course Reserve search box");
-                                    $(searchForm).find("input[name='search_scope']").attr("value", discoveryCustom.search_scope + "_course");
-                                    $(searchForm).find("input[name='tab']").attr("value", "course_tab");
+                                    let scopeCode = discoveryCustom.primo_ve ? "CourseReserves" : discoveryCustom.search_scope + "_course";
+                                    $(searchForm).find("input[name='search_scope']").attr("value", scopeCode);
+                                    let tabCode = discoveryCustom.primo_ve ? "CourseReserves" : "course_tab";
+                                    $(searchForm).find("input[name='tab']").attr("value", tabCode);
                                 }
                             }
 
@@ -862,7 +864,7 @@ function searchPrimo(myId) {
 }
 
 // from primo documentation, modified to allow multiple search boxes (used by code below if jQuery available)
-function searchPrimoEnhanced(myId) {
+function searchPrimoEnhanced(myId, ve) {
 	"use strict";
 
 	// this here looks to see if we are doing a search on author, title, journal, or course field
@@ -871,7 +873,7 @@ function searchPrimoEnhanced(myId) {
 	if ( scope !== null ) {
 
 		// set the field of query=[field],contains,[keywords]
-		switch (scope.toLowerCase()) {
+        switch (scope.toLowerCase()) {
 			case "author":
 				field = "creator";
 				break;
@@ -887,20 +889,24 @@ function searchPrimoEnhanced(myId) {
 				document.getElementById(myId+"-primoQueryjournals").value = "any," + tval;
 				break;
 
+            /* Naming got better in VE */
 			case "course_name":
-				field = "crsname";
+                field = ve ? "course_name" : "crsname";
 				break;
 
 			case "course_instr":
-				field = "crsinstrc";
+            case "course_instructor":
+				field = ve ? "course_instructor" : "crsinstrc";
 				break;
 
 			case "course_id":
-				field = "crsid";
+            case "course_code":
+                field = ve ? "course_code" : "crsid";
 				break;
 
 			case "course_dept":
-				field = "crsdept";
+            case "course_department":
+                field = ve ? "course_department" : "crsdept";
 				break;
 
 			// default is already "any"
