@@ -43,3 +43,7 @@ The above HTML DIV gives a very basic out of the box search box. You can add att
 ```
 
 More examples are listed in [examples](examples/example-primo.html)
+
+## Summon
+
+summon.js is also included, however it requires jQuery. See the [Summon examples](examples/example-summon.html) page for more information.
