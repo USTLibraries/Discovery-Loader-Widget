@@ -1,7 +1,6 @@
 /*
 	Discovery Loader Widget (Primo New UI or Primo VE)
 	University of St. Thomas Libraries
-	0.1.1-20200807
 
 	Full Code and Documentation available at:
 	https://github.com/USTLibraries/Discovery-Loader-Widget
@@ -28,7 +27,7 @@
 	* HOUSEKEEPING
 	*/
 
-	var version = "0.1.2-20200603"; // Just something to check for in the Browser Console
+	var version = "0.1.6-20210707"; // Just something to check for in the Browser Console
 	                                 // Does nothing else except keep you from pulling your hair out when you wonder if the code changes
 									 // you made are loaded or cached or not deployed or as an indicator that you really are going crazy
 								 	 // and should take a break
@@ -275,25 +274,29 @@
                              * Generate the hidden fields
                              */
 
-
                             // we use an array
                             var hiddenFields = [];
 
-                            // the custom hidden fields
-                            hiddenFields.push(createHiddenField("institution", discoveryCustom.instituion));
-                            hiddenFields.push(createHiddenField("vid", discoveryCustom.vid));
+                            // hidden fields
+                            hiddenFields.push(createHiddenField("query", "", { id: searchId + "-primoQuery" }));
                             hiddenFields.push(createHiddenField("tab", discoveryCustom.tab));
                             hiddenFields.push(createHiddenField("search_scope", discoveryCustom.search_scope));
-                            hiddenFields.push(createHiddenField("bulkSize", discoveryCustom.bulkSize));
+                            hiddenFields.push(createHiddenField("vid", discoveryCustom.vid));
+                            
+                            if ( !discoveryCustom.primo_ve ) {
+                                hiddenFields.push(createHiddenField("institution", discoveryCustom.instituion));
+                                hiddenFields.push(createHiddenField("mode", "Basic"));
+                                hiddenFields.push(createHiddenField("displayMode", "full"));
+                                hiddenFields.push(createHiddenField("highlight", "true"));
+                                hiddenFields.push(createHiddenField("dum", "true"));
+                                hiddenFields.push(createHiddenField("bulkSize", discoveryCustom.bulkSize));
+                                hiddenFields.push(createHiddenField("displayField", "all"));
+                                hiddenFields.push(createHiddenField("pcAvailabiltyMode", "true"));
+                            }
 
-                            // the fixed hidden fields
-                            hiddenFields.push(createHiddenField("mode", "Basic"));
-                            hiddenFields.push(createHiddenField("displayMode", "full"));
-                            hiddenFields.push(createHiddenField("highlight", "true"));
-                            hiddenFields.push(createHiddenField("dum", "true"));
-                            hiddenFields.push(createHiddenField("query", "", { id: searchId + "-primoQuery" }));
-                            hiddenFields.push(createHiddenField("displayField", "all"));
-                            hiddenFields.push(createHiddenField("pcAvailabiltyMode", "true"));
+                            if ( discoveryCustom.primo_ve ) {
+                                hiddenFields.push(createHiddenField("offset", 0));
+                            }
 
                             // material/content type scoping
                             // 20190820 - clk - added ability to search multiple types
@@ -600,13 +603,17 @@
 
 
                             // assemble the search form
-                            $(searchForm).append(searchLabel);
-                            $(searchForm).append(searchField);
+                            //$(searchForm)
+                            //$(searchForm).
                             $(searchForm).append(hiddenFields);
                             $(searchForm).append(searchButton);
 
                             // assemble the discovery box
-                            $(this).html(searchForm); // replace placeholder a tag with form
+                            //$(this).html(searchForm); // replace placeholder a tag with form
+                            $(this).html("");
+                            $(this).append(searchLabel);
+                            $(this).append(searchField);
+                            $(this).append(searchForm);
                             if (searchTagline !== null) { $(this).prepend(searchTagline); } // before form
                             if (discoveryLinks !== null) { $(this).append(discoveryLinks); } // after form
                             if (myAutosuggest !== null) { $(this).append(myAutosuggest); } // after form
@@ -810,24 +817,31 @@
 
                 // This is the plain HTML that will be placed in the document
                 var html = " \
-<form class='discovery-search-box' action='" + discoveryCustom.url + "/" + discoPath + "/search' \n \
-      target='_blank' enctype='application/x-www-form-urlencoded; charset=utf-8' onsubmit=\"searchPrimo('"+ sbID + "')\" \
-      name='primoSearch' method='GET' id='"+ sbID + "-searchform'> \
     <label for='"+ sbID + "-primoQueryTemp'>" + discoveryCustom.default_label + "</label> \
     <input placeholder='"+ discoveryCustom.default_placeholder + "' class='discovery-search-field' \
        autocomplete='off' name='primoQueryTemp' id='"+ sbID + "-primoQueryTemp' type='search'> \
-    <input type='hidden' name='institution' value='"+ discoveryCustom.instituion + "'> \
-    <input type='hidden' name='vid' value='"+ discoveryCustom.vid + "'> \
-    <input type='hidden' name='tab' value='"+ discoveryCustom.tab + "'> \
-    <input type='hidden' name='search_scope' value='"+ discoveryCustom.search_scope + "'> \
-    <input type='hidden' name='mode' value='Basic'> \
-    <input type='hidden' name='displayMode' value='full'> \
-    <input type='hidden' name='bulkSize' value='"+ discoveryCustom.bulkSize + "'> \
-    <input type='hidden' name='highlight' value='true'> \
-    <input type='hidden' name='dum' value='true'> \
-    <input type='hidden' name='query' id='"+ sbID + "-primoQuery'> \
-    <input type='hidden' name='displayField' value='all'> \
-    <input type='hidden' name='pcAvailabiltyMode' value='true'> \
+    <form class='discovery-search-box' action='" + discoveryCustom.url + "/" + discoPath + "/search' \n \
+      target='_blank' enctype='application/x-www-form-urlencoded; charset=utf-8' onsubmit=\"searchPrimo('"+ sbID + "')\" \
+      name='primoSearch' method='GET' id='"+ sbID + "-searchform'>";
+
+      if ( !discoveryCustom.primo_ve ) {
+            html = html + "\
+            <input type='hidden' name='institution' value='"+ discoveryCustom.instituion + "'> \
+            <input type='hidden' name='mode' value='Basic'> \
+            <input type='hidden' name='displayMode' value='full'> \
+            <input type='hidden' name='bulkSize' value='"+ discoveryCustom.bulkSize + "'> \
+            <input type='hidden' name='highlight' value='true'> \
+            <input type='hidden' name='dum' value='true'> \
+            <input type='hidden' name='displayField' value='all'> \
+            <input type='hidden' name='pcAvailabiltyMode' value='true'> \
+            ";
+    }
+
+    html = html + "\
+        <input type='hidden' name='query' id='"+ sbID + "-primoQuery'> \
+        <input type='hidden' name='tab' value='"+ discoveryCustom.tab + "'> \
+        <input type='hidden' name='search_scope' value='"+ discoveryCustom.search_scope + "'> \
+        <input type='hidden' name='vid' value='"+ discoveryCustom.vid + "'> \
     <input id='go' title='"+ discoveryCustom.default_button + "' onclick=\"searchPrimo('" + sbID + "')\" \
            alt='"+ discoveryCustom.default_button + "' class='discovery-search-button' \
            value='"+ discoveryCustom.default_button + "' name='search' type='submit'> \
