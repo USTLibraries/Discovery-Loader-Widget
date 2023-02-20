@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -6,10 +6,6 @@
 
 
 	<meta name="viewport" content="width=device-width">
-
-	<!-- Bring in the JQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 </head>
 
@@ -29,14 +25,16 @@
 
 &lt;!-- search box --&gt;
 &lt;div class="discovery-search-widget"
-	id="discoverySearch111"
-	data-tagline="Type your search term(s):"
-	data-placeholder="Search for articles, books, and more"
-	data-advanced="default"
+     id="discoverySearch111"
+     data-tagline="true"
+     data-tagline-text="Type your search term(s):"
+     data-placeholder="true"
+     data-placeholder-text="Search for articles, books, and more"
+     data-advanced="true"
 &gt;&lt;a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources&lt;/a&gt;&lt;/div&gt;
 &lt;!-- end search box --&gt;
 
-&lt;script type="text/javascript" src="../primo.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="../primo.js" defer&gt;&lt;/script&gt;
 
 </tt></pre>
     </div>
@@ -47,9 +45,11 @@
         <!-- search box -->
         <div class="discovery-search-widget"
              id="discoverySearch111"
-             data-tagline="Type your search term(s):"
-             data-placeholder="Search for articles, books, and more"
-             data-advanced="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-placeholder-text="Search for articles, books, and more"
+             data-advanced="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end search box -->
 
     </div>
@@ -60,29 +60,17 @@
     <ul>
         <li>A place to host your css and js files</li>
         <li>A basic understanding of 3 HTML tags (<tt>DIV</tt>, <tt>A</tt>, <tt>SCRIPT</tt>), tag attributes (<tt>data-</tt>, <tt>href</tt>, <tt>src</tt>), and setting variables in JavaScript (Don't worry, it's all heavily commented)</li>
-        <li>
-            jQuery and jQuery UI loaded on the page (works without autosuggest if no jQuery UI). If you need to add jQuery to your HEAD yourself:
-            <pre>
-   &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"&gt;&lt;/script&gt;
-   &lt;script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"&gt;&lt;/script&gt;</pre>
-        </li>
-        <li>It does fall back to plain JavaScript if no jQuery, but produces an unscoped basic search box.</li>
     </ul>
-    <P>IMPORTANT!: There is currently NOT an autosuggest feature though the code is there for future use. Therefore you do NOT need jQuery UI. In order to use autosuggest you will need to have an autosuggest service as Primo does not provide one like Summon does. I'm working on a solution.</P>
     <h3>Files:</h3>
     <ul>
         <li><a href="../primo.js">primo.js</a></li>
         <li><a href="../primo.css">primo.css</a></li>
-        <li><a href="../discovery-loader.js">discovery-loader.js</a></li>
     </ul>
     <h3>Functionality:</h3>
     <ul>
-        <li>Works on main website and LibGuides 2.0 </li>
+        <li>Should work on any website that allows you to add DIV and SCRIPT tags.</li>
         <li>Won't conflict with other widgets of the same kind if mulitple on one page (even if not unique element ID)</li>
         <li>Degrades gracefully if no JavaScript (Display a default link to the discovery search page)</li>
-        <li>Degrades gracefully if no jQuery, falling back to a simple JavaScript generated html search form with no scoping [<a href="example-primo-nojquery.html">see example</a>]</li>
-        <li>Degrades gracefully if no jQuery UI, and will not attempt autosuggest</li>
-        <li>If jQuery UI available, it will have an autosuggest</li>
         <li>Enter key will issue search and on screen &quot;Search&quot; key on iOS and Android will initiate search</li>
         <li>Compatible with Windows (IE, Chrome, Firefox), Mac (Safari, Chrome, Firefox), iOS (Safari, Chrome, Firefox), Android (Chrome, Firefox)</li>
         <li>Responsive</li>
@@ -97,9 +85,9 @@
     <h2>Installation</h2>
 
     <ol>
-        <li>Download and customize the discovery-loader.js file (see JavaScript Customization below)</li>
+        <li>Download and customize the primo.js file (see JavaScript Customization below)</li>
         <li>Download and customize the primo.css file (basically the color of the button at the very least unless you like purple)</li>
-        <li>Place discovery-loader.js, primo.js and primo.css files on your server</li>
+        <li>Place primo.js and primo.css files on your server</li>
         <li>Add DIV HTML, JavaScript src, and (optional) CSS link to your pages (the script will auto load CSS if not present).</li>
         <li>Be sure the links in your DIV tags point to your Primo search</li>
     </ol>
@@ -109,7 +97,7 @@
     <p>JavaScript in HEAD (or at end of BODY, or immediately following DIV):</p>
 
     <div style="max-width: 800px; padding: 20px 20px 20px 20px; border: solid 1px">
-<pre><tt>&lt;script type="text/javascript" src="../discovery-loader.js"&gt;&lt;/script&gt;</tt></pre>
+<pre><tt>&lt;script type="text/javascript" src="../primo.js" defer&gt;&lt;/script&gt;</tt></pre>
     </div>
 
     <p>CSS in HEAD (or include CSS within your main css, or not at all since the script will check for it an include it automatically):</p>
@@ -138,8 +126,10 @@
         <div class="discovery-search-widget"
              id="discoverySearch001"
              data-target="_parent"
-             data-tagline="Type your search term(s):"
-             data-placeholder="Search for articles, books, and more"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-placeholder-text="Search for articles, books, and more"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end search box -->
 
 
@@ -154,8 +144,10 @@
              id="discoverySearchBooks001"
              data-scope=""
              data-scope-content-type="BOOKS"
-             data-tagline="Book search keywords:"
-             data-placeholder="Book keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Book search keywords:"
+             data-placeholder="true"
+             data-placeholder-text="Book keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end books keyword search box -->
 
         <h5>BOOKS by TITLE</h5>
@@ -165,8 +157,10 @@
              id="discoverySearchBooks002"
              data-scope="title"
              data-scope-content-type="BOOKS"
-             data-tagline="Type as much or as little of the book title as you want:"
-             data-placeholder="Book title keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type as much or as little of the book title as you want:"
+             data-placeholder="true"
+             data-placeholder-text="Book title keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end books title search box -->
 
         <h5>BOOKS by AUTHOR</h5>
@@ -176,8 +170,10 @@
              id="discoverySearchBooks003"
              data-scope="author"
              data-scope-content-type="BOOKS"
-             data-tagline="Type the book author's last or full name:"
-             data-placeholder="Book author name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type the book author's last or full name:"
+             data-placeholder="true"
+             data-placeholder-text="Book author name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end books author search box -->
 
 
@@ -189,8 +185,10 @@
              id="discoverySearchFilms001"
              data-scope=""
              data-scope-content-type="VIDEO"
-             data-tagline="Type your search term(s):"
-             data-placeholder="Search for streaming videos and DVDs:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-placeholder-text="Search for streaming videos and DVDs:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end video search box -->
 
         <h5>FILMS by TITLE</h5>
@@ -200,8 +198,10 @@
              id="discoverySearchFilms002"
              data-scope="title"
              data-scope-content-type="VIDEO"
-             data-tagline="Type as much or as little of the title as you want:"
-             data-placeholder="Title keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type as much or as little of the title as you want:"
+             data-placeholder="true"
+             data-placeholder-text="Title keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end video title search box -->
 
         <h5>FILMS by AUTHOR</h5>
@@ -211,8 +211,10 @@
              id="discoverySearchFilms003"
              data-scope="author"
              data-scope-content-type="VIDEO"
-             data-tagline="Type the author's last or full name:"
-             data-placeholder="Author name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type the author's last or full name:"
+             data-placeholder="true"
+             data-placeholder-text="Author name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!--end video author search box -->
 
 
@@ -222,8 +224,10 @@
         <div class="discovery-search-widget"
              id="discoverySearchMusic001"
              data-scope-content-type="AUDIO"
-             data-tagline="Type your search term(s):"
-             data-placeholder="Search for articles, books, and more"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-placeholder-text="Search for articles, books, and more"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- music search box -->
 
         <h5>AUDIO by TITLE</h5>
@@ -231,16 +235,20 @@
              id="discoverySearchMusic002"
              data-scope="title"
              data-scope-content-type="AUDIO"
-             data-tagline="Type as much or as little of the title as you want:"
-             data-placeholder="Title keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type as much or as little of the title as you want:"
+             data-placeholder="true"
+             data-placeholder-text="Title keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h5>AUDIO by AUTHOR</h5>
         <div class="discovery-search-widget"
              id="discoverySearchMusic003"
              data-scope="author"
              data-scope-content-type="AUDIO"
-             data-tagline="Type the author's last or full name:"
-             data-placeholder="Author name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type the author's last or full name:"
+             data-placeholder="true"
+             data-placeholder-text="Author name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h2>More Examples</h2>
         <p>Again, view source to see how these are implemented.</p>
@@ -248,8 +256,8 @@
         <h3>Default</h3>
         <div class="discovery-search-widget"
              id="discoverySearchDefault"
-             data-placeholder="default"
-             data-advanced="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-placeholder="true"
+             data-advanced="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h3>Plain</h3>
 
@@ -265,32 +273,37 @@
         <div class="discovery-search-widget"
              id="discoverySearch125"
              data-scope-content-type="newspaper_articles"
-             data-placeholder="Search for newspaper articles"
-             data-tagline="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-placeholder="true"
+             data-placeholder-text="Search for newspaper articles"
+             data-tagline="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h3>Discipline</h3>
         <div class="discovery-search-widget"
              id="discoverySearch126"
              data-scope-discipline="Computer Science"
-             data-tagline="Search within computer science:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search within computer science:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h3>Date Scoping</h3>
         <div class="discovery-search-widget"
              id="discoverySearch127"
              data-scope-date="2007:2015"
-             data-tagline="Search between 2007 and 2015:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search between 2007 and 2015:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h3>Full Text Scoping</h3>
         <div class="discovery-search-widget"
              id="discoverySearch128"
              data-scope-fulltext="true"
-             data-tagline="Full text only:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Full text only:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h3>Scholarly publications Scoping</h3>
         <div class="discovery-search-widget"
              id="discoverySearch129"
              data-scope-scholarly="true"
-             data-tagline="Scholarly publications only:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Scholarly publications only:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h3>Local only Scoping</h3>
         <div class="discovery-search-widget"
@@ -301,7 +314,8 @@
         <div class="discovery-search-widget"
              id="discoverySearch135"
              data-scope-subj-terms="philosophy,history"
-             data-tagline="Philosophy History:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Philosophy History:"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
         <h2>Multiple Type Scopes</h2>
@@ -314,8 +328,10 @@
              id="discoverySearchBooksVideo001"
              data-scope=""
              data-scope-content-type="VIDEO,BOOKS"
-             data-tagline="Search for books and video:"
-             data-placeholder="Search keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search for books and video:"
+             data-placeholder="true"
+             data-placeholder-text="Search keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end books and video search box -->
 
         <!-- articles and dissertations search box -->
@@ -323,8 +339,10 @@
              id="discoverySearchArticlesDissertations001"
              data-scope=""
              data-scope-content-type="articles,dissertations"
-             data-tagline="Search for articles and dissertations:"
-             data-placeholder="Search keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search for articles and dissertations:"
+             data-placeholder="true"
+             data-placeholder-text="Search keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end articles and dissertations search box -->
 
         <!-- articles and books search box -->
@@ -332,8 +350,10 @@
              id="discoverySearchArticlesBooks001"
              data-scope=""
              data-scope-content-type="articles,BOOKS"
-             data-tagline="Search for articles and books:"
-             data-placeholder="Search keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search for articles and books:"
+             data-placeholder="true"
+             data-placeholder-text="Search keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end articles and books search box -->
 
         <h2>Journal Title Search (Primo)</h2>
@@ -343,8 +363,10 @@
         <div class="discovery-search-widget"
              id="discoverySearchJournal"
              data-scope="journal"
-             data-tagline="Find journals and newspapers subscribed to by the library"
-             data-placeholder="Journal title"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Find journals and newspapers subscribed to by the library"
+             data-placeholder="true"
+             data-placeholder-text="Journal title"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
         <h2>Course Reserves (beta)</h2>
@@ -357,38 +379,48 @@
         <div class="discovery-search-widget"
              id="discoverySearchCourse"
              data-scope="course"
-             data-tagline="Search course reserves by keyword"
-             data-placeholder="Course, book, article, or media keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search course reserves by keyword"
+             data-placeholder="true"
+             data-placeholder-text="Course, book, article, or media keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h3>Course Reserves by Course Name</h3>
         <div class="discovery-search-widget"
              id="discoverySearchCourseName"
              data-scope="course_name"
-             data-tagline="Search course reserves by course name"
-             data-placeholder="Course name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search course reserves by course name"
+             data-placeholder="true"
+             data-placeholder-text="Course name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
         <h3>Course Reserves by Instructor</h3>
         <div class="discovery-search-widget"
              id="discoverySearchCourseInstr"
              data-scope="course_instr"
-             data-tagline="Search course reserves by instructor"
-             data-placeholder="Instructor name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search course reserves by instructor"
+             data-placeholder="true"
+             data-placeholder-text="Instructor name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
         <h3>Course Reserves by Course ID</h3>
         <div class="discovery-search-widget"
              id="discoverySearchCourseByID"
              data-scope="course_id"
-             data-tagline="Search course reserves by Course ID"
-             data-placeholder="Course ID"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search course reserves by Course ID"
+             data-placeholder="true"
+             data-placeholder-text="Course ID"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
         <h3>Course Reserves by Department</h3>
         <div class="discovery-search-widget"
              id="discoverySearchCourseDept"
              data-scope="course_dept"
-             data-tagline="Search course reserves by department"
-             data-placeholder="Department name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Search course reserves by department"
+             data-placeholder="true"
+             data-placeholder-text="Department name"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
         <h2>Links under box</h2>
@@ -399,9 +431,10 @@
         <!-- search box -->
         <div class="discovery-search-widget"
              id="discoverySearch001-link01"
-             data-tagline="Type your search term(s):"
-             data-placeholder="default"
-             data-advanced="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-advanced="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end search box -->
 
         <h3>Login</h3>
@@ -409,9 +442,10 @@
         <!-- search box -->
         <div class="discovery-search-widget"
              id="discoverySearch001-link02"
-             data-tagline="Type your search term(s):"
-             data-placeholder="default"
-             data-login="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-login="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end search box -->
 
         <h3>Advanced and Login</h3>
@@ -419,10 +453,11 @@
         <!-- search box -->
         <div class="discovery-search-widget"
              id="discoverySearch001-link03"
-             data-tagline="Type your search term(s):"
-             data-placeholder="default"
-             data-advanced="default"
-             data-login="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-advanced="true"
+             data-login="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end search box -->
 
         <h3>Custom Text for Advanced and Login</h3>
@@ -430,10 +465,12 @@
         <!-- search box -->
         <div class="discovery-search-widget"
              id="discoverySearch001-link04"
-             data-tagline="Type your search term(s):"
-             data-placeholder="default"
-             data-advanced="Search like a pro"
-             data-login="Login"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-advanced="true"
+             data-advanced-text="Search like a pro"
+             data-login="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end search box -->
 
         <h3>Custom Link with Default</h3>
@@ -441,9 +478,10 @@
         <!-- search box -->
         <div class="discovery-search-widget"
              id="discoverySearch001-link05"
-             data-tagline="Type your search term(s):"
-             data-placeholder="default"
-             data-custom-link="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-custom-link="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end search box -->
 
         <h3>Re-Customized Custom Link along with Advanced Search</h3>
@@ -451,32 +489,23 @@
         <!-- search box -->
         <div class="discovery-search-widget"
              id="discoverySearch001-link06"
-             data-tagline="Type your search term(s):"
-             data-placeholder="default"
-             data-advanced="default"
-             data-custom-link="Learn more"
+             data-tagline="true"
+             data-tagline-text="Type your search term(s):"
+             data-placeholder="true"
+             data-advanced="true"
+             data-custom-link="true"
+             data-custom-link-text="Learn more"
              data-custom-link-url="https://example.com"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
         <!-- end search box -->
 
 
-        <h2>Targets</h2>
+     <h2>Targets</h2>
 
      <p>You can set the target window/tab that the search is submitted to.</p>
 
      <p>A default setting can be set in .target_default but can be overridden in the div. You may want to override a _self if you know the seach box is in an iframe and you want to either open in the _parent or _blank tab.</p>
 
-     <p>Current default_target is <tt id="current_default_target"></tt></p>
-     <script>
-          document.getElementById("current_default_target").innerHTML = discovery_widget_loader_custom_settings.default_target;
-     </script>
-
-    <h3>Default (default set in div)</h3>
-     <!-- search box -->
-     <div class="discovery-search-widget"
-          id="discoverySearch001"
-          data-target="default"
-     ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
-     <!-- end search box -->
+     <h3>Default</h3>
 
      <h3>Default (none set in div)</h3>
      <!-- search box -->
@@ -527,18 +556,11 @@
 
      <iframe name="searchResultIframe" style="width:100%; height:300px"></iframe>
 
-    </div>
+     </div>
 
-    
+     <h2>What are the div attributes available?</h2>
 
-    <h2>What are the div attributes available?</h2>
-
-    <p>I used the <a href="https://knowledge.exlibrisgroup.com/Primo/Product_Documentation/New_Primo_User_Interface/New_UI_Customization_-_Best_Practices#Creating_a_Search_Box_With_Deep_Links_to_the_New_UI">Primo Search Box Documentation</a>, trial and error using the available facets, and previous experience with Matthew Reidsma's (GVSU) <a href="https://github.com/mreidsma/Custom-Summon-Searches">Custom Summon Searches</a> to come up with these.</p>
-    <p>
-        The nice thing is that the DIV attributes are interchangable between summon.js and primo.js which was the intent. The main difference is the way date
-        scope is formatted (YYYY:YYYY for Primo, YYYY-MM-DD:YYYY-MM-DD for Summon) and the fact that Primo can only take 1 material type. Also, Primo
-        allows added functionality such as Course Reserves and Journal Title search so additional options for data-scope are available.
-    </p>
+     <p>I used the <a href="https://knowledge.exlibrisgroup.com/Primo/Product_Documentation/New_Primo_User_Interface/New_UI_Customization_-_Best_Practices#Creating_a_Search_Box_With_Deep_Links_to_the_New_UI">Primo Search Box Documentation</a>, trial and error using the available facets, and previous experience with Matthew Reidsma's (GVSU) <a href="https://github.com/mreidsma/Custom-Summon-Searches">Custom Summon Searches</a> to come up with these.</p>
 
     <h3>div attributes:</h3>
 
@@ -555,7 +577,6 @@
             overflow: auto;
         }
     </style>
-
 
     <p>All attributes are optional. you can do something as simple as:</p>
 
@@ -595,26 +616,41 @@
         <dt>data-scope-local</dt>
         <dd><em>true|false</em> - search within your catalog only. Not including this attribute defaults to FALSE</dd>
 
-        <dt>data-tagline</dt>
-        <dd><em>default|[custom text]</em> - set as &quot;default&quot; or to your own custom text. If you don't include this attribute, or if you leave it empty (&quot;&quot;) no text will display in its place.</dd>
-
         <dt>data-target</dt>
         <dd><em>default|_blank|_parent|_self|_top|framename</em> - what is the target window/tab for the search? Note: Since this is invoked by JavaScript, more and more browsers are blocking new tabs/windows. _parent and _self are safer.</dd>
 
+        <dt>data-tagline</dt>
+        <dd><em>true|false|''</em> - Setting this to 'true' without <tt>data-tagline-text</tt> will display default tagline</dd>
+
+        <dt>data-tagline-text</dt>
+        <dd><em>[custom text]</em> - data-tagline must be set to 'true'</dd>
+
         <dt>data-placeholder</dt>
-        <dd><em>default|[custom text]</em> - set as &quot;default&quot; or to your own custom text. If you don't include this attribute, or if you leave it empty (&quot;&quot;) no text will display in its place.</dd>
+        <dd><em>true|false|''</em> - Setting this to 'true' without <tt>data-placeholder-text</tt> will display default placeholder</dd>
+
+        <dt>data-placeholder-text</dt>
+        <dd><em>[custom text]</em> - data-placeholder must be set to 'true'</dd>
 
         <dt>data-advanced</dt>
-        <dd><em>default|[custom text]</em> - set as &quot;default&quot; or to your own custom text. If you don't include this attribute, or if you leave it empty (&quot;&quot;) no text will display in its place.</dd>
+        <dd><em>true|false|''</em> - Setting this to 'true' without <tt>data-advanced-text</tt> will display default advanced text</dd>
+
+        <dt>data-advanced-text</dt>
+        <dd><em>[custom text]</em> - data-advanced must be set to 'true'</dd>
 
         <dt>data-login</dt>
-        <dd><em>default|[custom text]</em> - set as &quot;default&quot; or to your own custom text. If you don't include this attribute, or if you leave it empty (&quot;&quot;) no text will display in its place. This will place a link to log into My Library Card under the search box.</dd>
+        <dd><em>true|false|''</em> - Setting this to 'true' without <tt>data-login-text</tt> will display default login text</dd>
+
+        <dt>data-login-text</dt>
+        <dd><em>[custom text]</em> - data-login must be set to 'true'</dd>
 
         <dt>data-custom-link</dt>
-        <dd><em>default|[custom link text]</em> - set as &quot;default&quot; or to your own custom text. If you don't include this attribute the link will not appear. This will place either the link set in customization or specfied in the attribute below the search box behind any other links (such as Advanced or Login).</dd>
+        <dd><em>true|false|''</em> - Setting this to 'true' without <tt>data-custom-link-text</tt> will display default custom text</dd>
+
+        <dt>data-custom-link-text</dt>
+        <dd><em>[custom link text]</em> - data-custom-link must be set to 'true'</dd>
 
         <dt>data-custom-link-url</dt>
-        <dd><em>[custom url]</em> - set to your own custom text but will only be used if data-custom-link is set, even if default. If you don't include this attribute the default custom link url will be used if the data-custom-link attribute is set.</dd>
+        <dd><em>[custom url]</em> - set to your own custom text but will only be used if data-custom-link is set.</dd>
 
     </dl>
 
@@ -622,8 +658,8 @@
 <!-- plain with default tagline and placeholder -->
 <div class="discovery-search-widget"
      id="discoverySearchDefault"
-     data-placeholder="default"
-     data-advanced="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+     data-placeholder="true"
+     data-advanced="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
 <!-- example of title search for BOOKS -->
@@ -631,8 +667,10 @@
      id="discoverySearch001"
      data-scope="title"
      data-scope-content-type="BOOKS"
-     data-tagline="Type as much or as little of the title as you want:"
-     data-placeholder="Title keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+     data-tagline="true"
+     data-tagline-text="Type as much or as little of the title as you want:"
+     data-placeholder="true"
+     data-placeholder-text="Title keywords"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
 <!-- plain with no placeholder or tags -->
@@ -644,7 +682,7 @@
 <div class="discovery-search-widget"
      id="discoverySearch125"
      data-scope-content-type="newspaper_articles"
-     data-tagline="default"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
+     data-tagline="true"><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 
 
 <script type="text/javascript" src="../primo.js"></script>
@@ -655,7 +693,7 @@
 
     <p>The only variable you will need to change out of the box are the following:</p>
 
-    <p><strong><tt>discovery_widget_loader_custom_settings.*</tt></strong></p>
+    <p><strong>Custom Settings</strong></p>
     <dl>
          <dt>primo_ve</dt>
          <dd><em>true|false</em> - is this for Primo VE? If so it will switch out /primo-explore with /discovery for the path.</dd>
@@ -701,27 +739,9 @@
 
         <dt>facet_media</dt>
         <dd><em>[facet to map to]</em> - what facet do you want "MEDIA" to map to? Default is "media" but this might not be a facet in your set-up.</dd>
-
-        <dt>custom_link_url</dt>
-        <dd><em>[url]</em> - define a custom link to link to under the search box such as a feedback or ask us form. This will place it behind Advanced or Login if they are present, or alone if not. This can be overridden in the data-custom-link-url attribute, but only one custom link can be shown at a time.</dd>
-
-        <dt>custom_link_text</dt>
-        <dd><em>[text]</em> - define the text to show for the custom link under the search box such as feedback or ask us. Can be overridden in the data-custom-link attribute.</dd>
-
-        <dt>narrow_max</dt>
-        <dd><em>380 is default</em> - define what determines a narrow width for when the search box is in a narrow column or screen. The default display of the search box is for wide width (ideally &gt; 400 pixels). The size of the search button with the text &quot;Search&quot; and the search icon in the left of the input field takes up too much space in narrow applications. So when a narrow width is encountered the icon on the left disappears for more text entry area, and the search button changes to a square button with just the search icon. Tip: If a search icon on as the button is always desired no matter the column width, set narrow_max to a really high number such as 9999 and it will always display this way.</dd>
-
-
     </dl>
 
-    <h3>Current values:</h3>
-    <textarea id="currentValues"></textarea>
-
-    <script type="text/javascript" src="../discovery-loader.js"></script>
-    
-    <script>
-        document.getElementById("currentValues").innerHTML = JSON.stringify(discovery_widget_loader_custom_settings, null, 4);
-    </script>
+    <script type="text/javascript" src="../primo.js" defer></script>
 
 </body>
 </html>
