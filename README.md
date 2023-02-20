@@ -6,22 +6,22 @@ Uses plain JavaScript (no jQuery or other framework needed). Just fill in the cu
 
 ## Get Started
 
-1. Use a DIV tag from one of the example HTML files.
+1. Use a DIV tag from one of the example HTML files
 2. Customize the custom variables in primo.js
 3. Then add a script source to primo.js
-4. CSS will be included automatically! But if you wish to load the css into a main css file, go ahead (it checks so it won't do it twice!)
+4. Either include a `<link>` to the primo.css file in `HEAD` or include the contents of the primo.css file in your main css
 
 ## Installation
 
-1. Download and customize the primo.js file (see JavaScript Customization below)
+1. Download and customize the primo.js file (see JavaScript Customization below. Only update `cssFile`, `configSettings`, and `configAttributes`)
 2. Download and customize the primo.css file (basically the color of the button at the very least unless you like purple)
 3. Place primo.js and primo.css on your server
-4. Add DIV HTML, JavaScript src, and (optional) CSS link to your pages.
+4. Add DIV HTML, JavaScript src, and CSS link to your pages
 5. Be sure the links in your DIV tags point to your main discovery search page (not results)
 
 ### Customize primo.js
 
-The block of code below is an example of all you need to customize the basic features. You can add additional settings from the `defaultSettings` and `defaultAttributes`. You may also add attributes in the DIV tag.
+The block of code below is an example of all you need to customize the basic features. You can add additional settings from the `defaultSettings` and `defaultAttributes`. You may also add `data-` attributes in the DIV tag to customize on-the-fly.
 
 ```javascript
 /* Required ! - update to your settings */
@@ -120,7 +120,7 @@ Basic format to use is:
     <script type="text/javascript" src="primo.js" defer></script>
 ```
 
-The script tag can go in the head, body, or end of the page.
+The script tag can go in the head, body, or end of the page as long as it has the `defer` attribute.
 
 The above HTML DIV gives a very basic out of the box search box. You can add attributes for scoping and text such as:
 
@@ -137,3 +137,7 @@ The above HTML DIV gives a very basic out of the box search box. You can add att
 ```
 
 More examples are listed in [examples](examples/index.html)
+
+## Summon
+
+The files `summon.js` and `summon.css` are for reference only and are not currently supported. They utilize the same `DIV` placeholder standard, but will not load properly as-is. With updated coding you could make them work.
