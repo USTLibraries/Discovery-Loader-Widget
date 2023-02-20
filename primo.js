@@ -11,15 +11,19 @@
 	Primo Search Box Documentation:
 	https://knowledge.exlibrisgroup.com/Primo/Product_Documentation/New_Primo_User_Interface/New_UI_Customization_-_Best_Practices#Creating_a_Search_Box_With_Deep_Links_to_the_New_UI
 
+    Note that the build() and load() methods are written to be easily
+    incorporated into a framework component such as Vue.js. The 
+    functions and variables named thisSomething will need to be changed
+    to this.something. Also, there might be a few additional parameter
+    swaps to watch out for.
 
 */
 
-(function () {
+(async function () {
 	'use strict';
 
-	/*
-    ***************************************************************************
-	* HOUSEKEEPING
+	/* ========================================================================
+	    HOUSEKEEPING
 	*/
 
 	const info = {
@@ -30,15 +34,16 @@
 	    silent: false,
     };
 
-    // Update ! - Custom CSS File Location
-    const cssFile = 'https://static.assets.libraries.stthomas.edu/widget/discovery/primo.css';
-
     const load = function (options, search) {
-        /* ********************************************************************
-         * CUSTOM CONFIG - modify configSettings and configAttributes
-         * Only use defaultSettings and defaultAttributes as examples of available properties */
+        /* ====================================================================
+           --------------------------------------------------------------------
+            CUSTOM CONFIG
+            Modify configSettings and configAttributes
+            Only use defaultSettings and defaultAttributes as examples of available properties
+        */
 
-        /* Required ! - update to your settings */
+        /*  !!! REQUIRED !!!
+            Update to your settings */
         const configSettings = {
             primo_ve: true,
             url: 'https://librarysearch.stthomas.edu',
@@ -48,7 +53,10 @@
             search_scope: 'UST_MNPALS_PROFILE',
         };
 
-        /* Optional ! - update to your settings */
+        /*  !!! OPTIONAL !!!
+            Update to your settings
+            Add more from the list under defaultAttributes
+            These may always be overwritten by supplying a data attribute in the DIV placeholder */
         const configAttributes = {
             'data-target': '_parent',
             'data-advanced-text': 'More search options',
@@ -57,14 +65,20 @@
             'data-custom-link-url': 'https://library.stthomas.edu/ask/',
         };
 
-        /* ********************************************************************
-         * DEFAULTS - modify above, not below */
+        /*  END CUSTOM CONFIG
+           --------------------------------------------------------------------
+           ===================================================================+
+        */
+
+        /* --------------------------------------------------------------------
+            DEFAULTS - modify above, not below
+        */
 
         /* These are default settings which will be over-ridden by configSettings 
          * ! Update configSettings, don't update here ! */
         const defaultSettings = {
             primo_ve: false,
-            url: 'https://myprimo.myinstitution.example.edu', // base URL to your primo instance
+            url: 'https://myprimo.primo.exlibrisgroup.com', // base URL to your primo instance
 
             // primo values - many will be found in your query string or in Back Office
             instituion: 'YOUR_INSTITUTION', // Even for VE, put this in
@@ -88,7 +102,7 @@
         };
 
 
-        /* These are default settings which will be over-ridden by configAttributes 
+        /* These are default settings which will be overwritten by configAttributes 
          * ! Update configAttributes, don't update here ! */
         const defaultAttributes = {
             'data-target': '_blank',
@@ -122,7 +136,6 @@
             options.searchby = {attributes: {}};
         }
 
-        console.log("optionsAttributes", options.attributes);
         /* Combine attributes and settings with passed attributes and settings */
         const attr = Object.assign(defaultAttributes, configAttributes, options.attributes, options.searchby.attributes);
         const settings = Object.assign(defaultSettings, configSettings, options.settings); // supplied options overwrite configSettings, which overwrite default
@@ -131,6 +144,60 @@
         build(attr, settings, search); // the search parameter is not used in Vue.js version
     };
 
+    /**
+     * Debugger that adds script information to the console.log output.
+     * This is useful in knowing what script is placing information in
+     * the console log.
+     * 
+     * @param {string} text Message to display
+     * @param {object} obj Object data to include (optional)
+     */
+    const debug = function( text, obj = null ) {
+		const pad = function (num, size = 2) { num = num.toString(); while (num.length < size) num = "0" + num; return num; }
+		if( !info.silent ) { let d = new Date(); let ts = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${pad(d.getMilliseconds(),3)}`; const s = `${info.handle} [${ts}] : ${text}`; (obj !== null) ? console.log(s, obj) : console.log(s); }
+	};
+
+    /**
+     * Go through each search box and check its width.
+     * If the width is less than the minimum allowed, switch
+     * its class to discovery-narrow-width which will change
+     * the search text to search glass and remove the search
+     * glass from the keyword field.
+     */
+    const widthCheck = function() {
+        const minWidthPx = 380; //px
+        const searchBoxes = document.querySelectorAll('.discovery-search-widget');
+
+        searchBoxes.forEach( (box) => {
+            let wOkay = true;
+            const cWidth = box.offsetWidth;
+
+            if (cWidth < minWidthPx) { wOkay = false; } // check the width
+
+            // for testing, place the width in a data attribute
+            box.setAttribute('data-calc-width', `Needed: ${minWidthPx} | Current: ${cWidth} | Enough Room?: ${wOkay}`);
+
+            if (wOkay) { // wide
+                box.classList.remove("discovery-narrow-width");
+                box.classList.add("discovery-wide-width");
+            } else { // narrow
+                box.classList.remove("discovery-wide-width");
+                box.classList.add("discovery-narrow-width");
+            }
+        });
+
+    };
+
+    /**
+     * Create and return a hidden field element
+     * 
+     * This method is required by load() and must be incorporated into
+     * any codebase on an external framework such as Vue.js.
+     * 
+     * @param {string} name Name of the field
+     * @param {string} value The field's value
+     * @returns DOM element of a hidden field
+     */
     const thisUtilCreateHiddenField = function(name, value) {
         const hiddenField = document.createElement('input');
         hiddenField.setAttribute('type', 'hidden');
@@ -139,126 +206,130 @@
         return hiddenField;
     };
     
+    /**
+     * Find all the DIV placeholders and insert a search box. Called from
+     * the execute section at the bottom of the script. This in turn calls
+     * 
+     */
     const create = function() {
-        
-        const isUniqueID = function (d) { return (document.querySelectorAll(`div#${d}`).length < 2); };
 
         const placeholders = document.querySelectorAll('div.discovery-search-widget');
-        placeholders.forEach( function (searchDiv) {
+        placeholders.forEach( generateSearchBox );
 
-            let searchId = searchDiv.getAttribute('id');
+        /* If the window is resized, recheck the width the search box to make
+        it more compact if need be. We do it here rather than a media query
+        because we need to compare the width of the parent element, not the 
+        window. Though parent element width is on track for CSS someday */
 
-            // make sure the ID on the element is unique, change it if not
-            if ( (searchId === '' || searchId === null || typeof searchId === 'undefined') || !isUniqueID(searchId)) {
-                debug(`Search Widget with no-ID/non-unique ID detected (${searchId})... assigning a unique ID`);
-                if (searchId === '' || searchId === null || typeof searchId === 'undefined') { searchId = 'discoverySearch'; }
-
-                // select a new id
-                let newId = '';
-                do { newId = searchId + "_" + Math.floor((Math.random() * 1000) + 1);
-                } while (!isUniqueID(newId));
-
-                // assign the new id
-                searchId = newId;
-                searchDiv.setAttribute('id', searchId);
-
-                debug(`Search Widget id reassigned: ${searchId}`);
-
-            }
-
-            /* *****************************************************************
-             * Create the form element
-             */
-
-            const search = {
-                searchDiv: searchDiv,
-                form: document.createElement("form"),
-                keywords: document.createElement("input"),
-                hidden: document.createElement("div"),
-                submit: document.createElement("input"),
-                label: document.createElement("label"),
-            };
-
-            search.form.setAttribute('id', `${searchId}-form`);
-
-            search.keywords.setAttribute('id', `${searchId}-primoQueryTemp`);
-            search.keywords.setAttribute('type', 'search');
-
-            search.hidden.setAttribute('id', `${searchId}-hidden`);
-            search.hidden.style.visibility = 'hidden';
-
-            search.submit.setAttribute('id', `${searchId}-submit`);
-            
-            search.label.setAttribute('for', `${searchId}-primoQueryTemp`);
-            search.label.setAttribute('id', `${searchId}-label`);
-            search.label.innerText = 'Search'; // TODO: data-label
-
-            /* searchDiv.dataset returns all data- attributes but changes keys to camel case, 
-            but we want to keep them as-is
-            https://www.geeksforgeeks.org/how-to-replace-the-names-of-multiple-object-keys-with-the-values-provided-using-javascript/
-            https://stackoverflow.com/questions/47836390/how-to-convert-a-camel-case-string-to-dashes-in-javascript
-            */
-            let renameKeys = (object) =>
-            Object.keys(object).reduce(
-              (acc, key) => ({
-                ...acc,
-                ...{ [`data-${(key.replace(/[A-Z]/g, m => "-" + m.toLowerCase()))}`] : object[key] },
-              }),
-              {}
-            );
-            const options = { attributes: renameKeys(searchDiv.dataset) };
-
-            searchDiv.innerHTML = '';
-            search.form.appendChild(search.label);
-            search.form.appendChild(search.keywords);
-            search.form.appendChild(search.hidden);
-            search.form.appendChild(search.submit);
-            searchDiv.appendChild(search.form);
-
-            load(options, search);
-
-            
-        });
+        window.addEventListener("resize", widthCheck); // add the listener
+        widthCheck(); // do an initial width check
     
     };
 
-    const debug = function( text, obj = null ) {
-		const pad = function (num, size = 2) { num = num.toString(); while (num.length < size) num = "0" + num; return num; }
-		// as long as we aren't silenced (silent === false)...
-		if( !info.silent ) { let d = new Date(); let ts = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${pad(d.getMilliseconds(),3)}`; const s = `${info.handle} [${ts}] : ${text}`; (obj !== null) ? console.log(s, obj) : console.log(s); }
-	};
+    const generateSearchBox = function (searchDiv) {
 
-	const cssCheck = function() {
+        const isUniqueID = function (d) { return (document.querySelectorAll(`div#${d}`).length < 2); };
 
-		// load in the css, but check first to make sure it isn't already loaded
-		// we do this rather than check for the file because the search box css could have been merged into another file, so we check css properties instead
-		// just so long as ".discovery-search-widget label { left: -10022px; }" doesn't change!
-		var elem = document.getElementsByClassName("discovery-search-widget");
+        let searchId = searchDiv.getAttribute('id');
 
-		if (elem.length > 0) {
+        // make sure the ID on the element is unique, change it if not
+        if ( (searchId === '' || searchId === null || typeof searchId === 'undefined') || !isUniqueID(searchId)) {
+            debug(`Search Widget with no-ID/non-unique ID detected (${searchId})... assigning a unique ID`);
+            if (searchId === '' || searchId === null || typeof searchId === 'undefined') { searchId = 'discoverySearch'; }
 
-			var myTempStyle = elem[0].getElementsByTagName("label")[0];
-			var theCSSprop = window.getComputedStyle(myTempStyle,null).getPropertyValue("left");
+            // select a new id
+            let newId = '';
+            do { newId = searchId + "_" + Math.floor((Math.random() * 1000) + 1);
+            } while (!isUniqueID(newId));
 
-			if ( theCSSprop !== "-10022px" ) {
-				debug("Adding css: " + cssFile );
-				var css=document.createElement('link');
-				css.type='text/css';
-				css.rel='stylesheet';
-				css.href= cssFile;
-				document.getElementsByTagName('head')[0].appendChild(css);
-			} else {
-				debug("Discovery css detected");
-			}
-		}
+            // assign the new id
+            searchId = newId;
+            searchDiv.setAttribute('id', searchId);
 
-	};
+            debug(`Search Widget id reassigned: ${searchId}`);
+
+        }
+
+        /* ----------------------------------------------------------------
+            Create the form element
+        */
+
+        /**
+         * Shortcut to contain all the elements we will be working with
+         */
+        const search = {
+            searchDiv: searchDiv,
+            form: document.createElement("form"),
+            keywords: document.createElement("input"),
+            hidden: document.createElement("div"),
+            submit: document.createElement("input"),
+            label: document.createElement("label"),
+        };
+
+        search.form.setAttribute('id', `${searchId}-form`);
+
+        search.keywords.setAttribute('id', `${searchId}-primoQueryTemp`);
+        search.keywords.setAttribute('type', 'search');
+
+        search.hidden.setAttribute('id', `${searchId}-hidden`);
+        search.hidden.style.visibility = 'hidden';
+
+        search.submit.setAttribute('id', `${searchId}-submit`);
+        
+        search.label.setAttribute('for', `${searchId}-primoQueryTemp`);
+        search.label.setAttribute('id', `${searchId}-label`);
+        search.label.innerText = 'Search'; // TODO: data-label
+
+        /* searchDiv.dataset returns all data- attributes but changes keys to camel case, 
+        but we want to keep them as-is in lowercase separated by hyphens with data- prepended
+        https://www.geeksforgeeks.org/how-to-replace-the-names-of-multiple-object-keys-with-the-values-provided-using-javascript/
+        https://stackoverflow.com/questions/47836390/how-to-convert-a-camel-case-string-to-dashes-in-javascript
+        */
+        let renameKeys = (object) =>
+        Object.keys(object).reduce(
+          (acc, key) => ({
+            ...acc,
+            ...{ [`data-${(key.replace(/[A-Z]/g, m => "-" + m.toLowerCase()))}`] : object[key] },
+          }),
+          {}
+        );
+        const options = { attributes: renameKeys(searchDiv.dataset) };
+
+        searchDiv.innerHTML = '';
+        search.form.appendChild(search.label);
+        search.form.appendChild(search.keywords);
+        search.form.appendChild(search.hidden);
+        search.form.appendChild(search.submit);
+        searchDiv.appendChild(search.form);
+
+        load(options, search);
+
+        /* ----------------------------------------------------------------
+            Attach final events
+        */
+
+        /* Search button event - no longer used - was used to make sure enter key worked on mac keyboard but no longer seems to be necessary - would need to be refactored if put back into use */
+
+        // search.keywords.addEventListener('keydown', (event) => {
+        //     if (event.keyCode === 13) {
+        //         this.dispatchEvent(new KeyboardEvent('keyup'); // make sure it gets sent!**
+        //         searchPrimoEnhanced(searchId, discoveryCustom.primo_ve); // this.form.submit();
+        //         return false;
+        //     }
+        // });
+
+        /* Resize event */
+        
+    };
 
     const build = function (attr, settings, thisSearch) {
         /* Perform any calculated settings */
         const discoPath = (settings.primo_ve) ? 'discovery' : 'primo-explore';
 
-        /* Transform existing template to a Primo starting template */
+        /* --------------------------------------------------------------------
+            Transform existing template to a Primo starting template
+        */
+
         /* Form */
         thisSearch.form.setAttribute('method', 'GET');
         thisSearch.form.setAttribute('target', attr['data-target']);
@@ -267,11 +338,8 @@
         thisSearch.form.classList.add('discovery-search-box');
 
         /* Keyword Field */
-        console.log("DATA: ",attr);
-        console.log("ATTR PLACEHOLDER: "+attr['data-placeholder']);
         if (attr['data-placeholder'].toLowerCase() === 'true') {
             thisSearch.keywords.setAttribute('placeholder', attr['data-placeholder-text']);
-            console.log("PLACEHOLDER-TEXT: "+attr['data-placeholder-text'])
         }
         thisSearch.keywords.setAttribute('type', 'search');
         thisSearch.keywords.setAttribute('name', 'primoQueryTemp');
@@ -422,8 +490,9 @@
         }
 
             
-        /* ********************************************************************
-         * Tag line and links */
+        /* --------------------------------------------------------------------
+           Tag line and links
+        */
 
         let searchTagline = null;
         let discoveryLinks = null;
@@ -477,7 +546,7 @@
         }
 
 
-        /* *****************************************************************
+        /* --------------------------------------------------------------------
             Generate the search button
         */
 
@@ -488,16 +557,6 @@
         thisSearch.submit.setAttribute('alt', 'Search');
         thisSearch.submit.classList.add('discovery-search-button');
 
-        /* Search button event */
-        /*
-        $(searchField).keydown(function (event) {
-            if (event.keyCode === 13) {
-                $(this).trigger("keyup"); // make sure it gets sent!**
-                searchPrimoEnhanced(searchId, discoveryCustom.primo_ve); // this.form.submit();
-                return false;
-            }
-        });
-        */
         thisSearch.submit.addEventListener('click', () => {
             // this here looks to see if we are doing a search on author, title, journal, or course field
             let field = 'any';
@@ -544,8 +603,9 @@
             thisSearch.form.submit();
         });
 
-        /* *****************************************************************
-        Put it all together */
+        /* --------------------------------------------------------------------
+            Put it all together 
+         */
 
         // assemble the search form
         // eslint-disable-next-line no-plusplus
@@ -579,8 +639,8 @@
         }
     };
     
-    /* *****************************************************************
-     * EXECUTE: This is what we call when document is ready
+    /* ========================================================================
+        EXECUTE: This is what we call when document is ready
      */
 
     // capture the execution start time
@@ -591,9 +651,6 @@
 
     // call the function that goes through the page and transforms all the div.discovery-search-widget tags
     create();
-
-    // now that we've transformed the divs, load the style sheet if it isn't already
-    cssCheck();
 
     // calculate the milliseconds it took to transform all <div> tags
     const diff = Math.abs((new Date()) - initStart);
