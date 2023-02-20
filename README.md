@@ -19,6 +19,98 @@ Uses plain JavaScript (no jQuery or other framework needed). Just fill in the cu
 4. Add DIV HTML, JavaScript src, and (optional) CSS link to your pages.
 5. Be sure the links in your DIV tags point to your main discovery search page (not results)
 
+### Customize primo.js
+
+The block of code below is an example of all you need to customize the basic features. You can add additional settings from the `defaultSettings` and `defaultAttributes`. You may also add attributes in the DIV tag.
+
+```javascript
+/* Required ! - update to your settings */
+const configSettings = {
+    primo_ve: true,
+    url: 'https://librarysearch.stthomas.edu',
+    institution: '01CLIC_STTHOMAS',
+    vid: '01CLIC_STTHOMAS:MNPALS',
+    tab: 'UST_MNPALS',
+    search_scope: 'UST_MNPALS_PROFILE',
+};
+
+/* Optional ! - update to your settings */
+const configAttributes = {
+    'data-target': '_parent',
+    'data-advanced-text': 'More search options',
+    'data-login-text': 'My Account',
+    'data-custom-link-text': 'Feedback',
+    'data-custom-link-url': 'https://library.stthomas.edu/ask/',
+};
+```
+
+Do not make changes to the `defaultSettings` or `defaultAttributes`, instead add the proper key/value pairs to `configSettings` and `configAttributes`. These are here, and included in the code, as examples.
+
+```javascript
+/* ********************************************************************
+    * DEFAULTS - modify above, not below */
+
+/* These are default settings which will be over-ridden by configSettings 
+    * ! Update configSettings, don't update here ! */
+const defaultSettings = {
+    primo_ve: false,
+    url: 'https://myprimo.myinstitution.example.edu', // base URL to your primo instance
+
+    // primo values - many will be found in your query string or in Back Office
+    instituion: 'YOUR_INSTITUTION', // Even for VE, put this in
+    vid: 'YOURVIEW', // from vid parameter in your search query url For VE it will be like INST:VIEW
+    tab: 'default_tab',
+    search_scope: 'yourscope',
+
+    // bulksize
+    bulkSize: '10',
+
+    // look at this in the query string: facet=local1,include,My University Library
+    localParam: 'local2', // for a localized search, what is the param? local1, local2?
+    localDesc: 'Example University', // the descriptor used for local resources
+
+    // customized mapping
+    facet_books: 'books', // can only include one material type, what type should BOOKS return?
+    facet_audio: 'audios', // can only include one material type, what type should AUDIO return?
+    facet_video: 'videos', // can only include one material type, what type should VIDEO return?
+    facet_music: 'scores', // can only include one material type, what type should MUSIC return?
+    facet_media: 'media', // can only include one material type, what type should AUVIS return?
+};
+
+
+/* These are default settings which will be over-ridden by configAttributes 
+    * ! Update configAttributes, don't update here ! */
+const defaultAttributes = {
+    'data-target': '_blank',
+    'data-tagline': '',
+    'data-tagline-text': 'Search the library catalog',
+    'data-placeholder': 'true',
+    'data-placeholder-text': 'Find books, articles, films, and more',
+    'data-placeholder-short': 'Keywords',
+    'data-advanced': '',
+    'data-advanced-text': 'Advanced Search',
+    'data-login': '',
+    'data-login-text': 'Login',
+    'data-button': 'Search', // Text for search button
+    'data-label': 'Search', // Accessible label for screen readers
+    'data-scope-content-type': '',
+    'data-scope-subj-terms': '',
+    'data-scope-discipline': '',
+    'data-scope-language': '',
+    'data-scope-date': '',
+    'data-scope-fulltext': '',
+    'data-scope-local': '',
+    'data-scope-scholarly': '',
+    'data-scope': '',
+    'data-custom-link': '',
+    'data-custom-link-url': 'https://www.example.com/feedback',
+    'data-custom-link-text': 'Feedback',
+};
+
+```
+
+### Add HTML
+
 Basic format to use is:
 
 ```HTML
@@ -28,7 +120,7 @@ Basic format to use is:
     <script type="text/javascript" src="primo.js" defer></script>
 ```
 
-(The script tag can go at the end of the page. It can do anywhere as long as it follows the last search widget)
+The script tag can go in the head, body, or end of the page.
 
 The above HTML DIV gives a very basic out of the box search box. You can add attributes for scoping and text such as:
 
@@ -37,13 +129,11 @@ The above HTML DIV gives a very basic out of the box search box. You can add att
         id="discoverySearch001"
         data-scope="title"
         data-scope-content-type="BOOKS"
-        data-tagline="Type as much or as little of the title as you want:"
-        data-placeholder="Title keywords"
+        data-tagline="true"
+        data-tagline-text="Type as much or as little of the title as you want:"
+        data-placeholder="true"
+        data-placeholder-text="Title keywords"
     ><a href="https://your-primo.hosted.exlibrisgroup.com/primo-explore/search?vid=YOURVIEW">Search Library Resources</a></div>
 ```
 
-More examples are listed in [examples](examples/example-primo.html)
-
-## Summon
-
-summon.js is also included, however it requires jQuery. See the [Summon examples](examples/example-summon.html) page for more information.
+More examples are listed in [examples](examples/index.html)
